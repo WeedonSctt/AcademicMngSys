@@ -15,6 +15,19 @@ public class RegistrationService {
     private RegistrationRepository repository = new RegistrationRepository();
     private Validator validator = new Validator();
 
+    public Enum.Error newRegistration(int studentID, int courseID) {
+        // Validator
+        // Missing to validate if there's yet a registration with same id's
+        if (!validator.validateRegistrationInputData(studentID, courseID)) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
+
+        repository.newRegistration(studentID, courseID);
+
+        return null;
+    }
+
+    // maybe stupid
     public void setAverageGrade(int studentID, ArrayList<Double> grades) {
         
         int sum = 0;
@@ -65,19 +78,7 @@ public class RegistrationService {
 
         return Helper.studentsInCourse(courseRegistrations, courseID);
 
-    }
-
-    public Enum.Error newRegistration(int studentID, int courseID) {
-        // Validator
-        // Missing to validate if there's yet a registration with same id's
-        if (!validator.validateRegistrationInputData(studentID, courseID)) {
-            return Enum.Error.WRONG_INPUT_DATA;
-        }
-
-        repository.newRegistration(studentID, courseID);
-
-        return null;
-    }
+    }    
 
     public Enum.Error cancelRegistration(int studentID, int courseID) {
         if (!Helper.existStudent(studentID) || !Helper.existCourse(courseID)) {

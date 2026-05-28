@@ -359,17 +359,78 @@ public class Main {
         }
     }
     // Missing
-    public static void registrationsMenu(Scanner sc, InputHelper inputHelper, RegistrationService registrationService) {
+    public static void registrationsMenu(Scanner sc, InputHelper inputHelper, RegistrationService service) {
         IO.print("\n\n");
         IO.print("                      R E G I S T R A T I O N S   M E N U");
         IO.print("\n\n");
 
         IO.println("                            <Choose an option>");
 
-        IO.println("1.");
-        IO.println("1.");
-        IO.println("1.");
-        IO.println("1.");
+        IO.println("1. Create Registration");
+        IO.println("2. Cancel Registration");
+        IO.println("3. Set Grade");
+        IO.println("4. Show Academic History");
+
+        int option = inputHelper.inputInteger(sc, "> ");
+
+        switch (option) {
+            case 1: {
+                // show students
+
+                int studentID = inputHelper.inputInteger(sc, "ID of student to register> ");
+
+                // show courses
+
+                int courseID = inputHelper.inputInteger(sc, "ID of course to register");
+
+                service.newRegistration(studentID, courseID);
+
+                break;
+            }
+            case 2: {
+                // show courses
+
+                int courseID = inputHelper.inputInteger(sc, "from which course you want to cancel registration> ");
+
+                // show students in course (id)
+
+                int studentID = inputHelper.inputInteger(sc, "Studen to cancel registration> ");
+
+                service.cancelRegistration(studentID, courseID);
+
+                break;
+            }
+            case 3: {
+                // show courses
+
+                int courseID = inputHelper.inputInteger(sc, "from which course you want to set grade");
+
+                // show students in course (id)
+
+                int studentID = inputHelper.inputInteger(sc, "id of student to grade");
+
+                // double grade = inputHelper.inputDouble(sc, "grade> ");
+
+                // temporal, just to compile
+                double grade = 0.0;
+
+                service.grade(studentID, courseID, grade);
+
+                break;
+            }
+            case 4: {
+                // show students
+
+                int studentID = inputHelper.inputInteger(sc, "id of student to show academic history");
+
+                // showAcademicHistory(service, id);
+
+                break;
+            }
+            default:
+                IO.println("Invalid Option!");
+                break;
+        }
     }
     public static void reportsMenu(Scanner sc) {}
     public static void saveMenu(Scanner sc) {}
