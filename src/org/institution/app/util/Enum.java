@@ -1,0 +1,17 @@
+package org.institution.app.util;
+
+public class Enum {
+    public enum Sys {
+        IN, OUT
+    }
+
+    public enum Error {
+        WRONG_INPUT_DATA, 
+        ACTIVE_STUDENT,
+        TEACHER_NOT_FOUND,
+        FILE_NOT_FOUND,
+        COULD_NOT_WRITE_TO_FILE,
+        
+    }
+
+}

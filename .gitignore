@@ -1,0 +1,25 @@
+# Build output
+target/
+out/
+bin/
+*.class
+
+# Generated application data
+data/*
+!data/.gitkeep
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
