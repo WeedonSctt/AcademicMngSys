@@ -22,6 +22,8 @@ public class TeacherRepository {
 
     public void newTeacher(int id, String name, String department, String email) {
         teachers.add(new Teacher(id, name, department, email));
+        this.lastID += 1;
+        return;
     }
 
     public ArrayList<Teacher> getTeachers() {

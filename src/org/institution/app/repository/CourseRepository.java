@@ -23,6 +23,7 @@ public class CourseRepository {
 
     public void newCourse(int id, String name, String description, int maximumStudents, int teacherID) {
         courses.add(new Course(id, name, description, maximumStudents, teacherID));
+        this.lastID += 1;
         return;
     }
 

@@ -8,6 +8,9 @@ bin/
 data/*
 !data/.gitkeep
 
+# Temporary docs / scratch files
+tmp/
+
 # IDE files
 .idea/
 .vscode/
