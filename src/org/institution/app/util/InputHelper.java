@@ -25,6 +25,24 @@ public class InputHelper {
         }
     }
 
+    public double inputDouble(Scanner sc, String placeholder) {
+        while (true) {
+            IO.print("[DOUBLE]" + placeholder);
+
+            String line = sc.nextLine();
+
+            if (line.isBlank()) {
+                IO.println("Error: INVALID FORMAT");
+            }
+
+            try {
+                double grade = Double.parseDouble(line);
+            } catch (NumberFormatException e) {
+                IO.println("Error: INVALID FORMAT");
+            }
+        }
+    }
+
     public String inputString(Scanner sc, String placeholder) {
         while (true) {
             IO.print(placeholder);
@@ -49,6 +67,11 @@ public class InputHelper {
 
             String line = sc.nextLine();
 
+            if (line.isBlank()) {
+                IO.println("Error: INVALID FORMAT");
+                continue;
+            }
+
             if (line.length() > 1) {
                 IO.print("Error: INVALID FORMAT");
                 continue;
@@ -67,5 +90,6 @@ public class InputHelper {
                 IO.println("Invalid Option!");
             }
         }
-    }
+    }    
+
 }
