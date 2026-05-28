@@ -36,7 +36,7 @@ public class InputHelper {
             }
 
             try {
-                double grade = Double.parseDouble(line);
+                return Double.parseDouble(line);
             } catch (NumberFormatException e) {
                 IO.println("Error: INVALID FORMAT");
             }
