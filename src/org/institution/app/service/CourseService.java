@@ -102,4 +102,16 @@ public class CourseService {
         return coursesData;
     }
 
+    public ArrayList<ArrayList<String>> getCoursesByRegistration(int studentID) {
+        ArrayList<ArrayList<String>> coursesData = new ArrayList<>();
+
+        ArrayList<Integer> coursesID = new RegistrationService().getCourseByStudent(studentID);
+
+        for (int i : coursesID) {
+            coursesData.add(Helper.courseToStringArray(repository.getCourseByID(i)));
+        }
+
+        return coursesData;
+    }
+
 }

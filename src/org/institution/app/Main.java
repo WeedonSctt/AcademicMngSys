@@ -47,7 +47,7 @@ public class Main {
                     coursesMenu(sc, inputHelper, courseService);
                     break;
                 case 4:
-                    registrationsMenu(sc, inputHelper, registrationService);
+                    registrationsMenu(sc, inputHelper, registrationService, studentService, courseService, teacherService);
                     break;
                 case 5:
                     reportsMenu(sc);
@@ -358,8 +358,15 @@ public class Main {
                 break;
         }
     }
-    // Missing
-    public static void registrationsMenu(Scanner sc, InputHelper inputHelper, RegistrationService service) {
+
+    public static void registrationsMenu(
+        Scanner sc,
+        InputHelper inputHelper,
+        RegistrationService registrationService,
+        StudentService studentService,
+        CourseService courseService,
+        TeacherService teacherService
+    ) {
         IO.print("\n\n");
         IO.print("                      R E G I S T R A T I O N S   M E N U");
         IO.print("\n\n");
@@ -370,61 +377,61 @@ public class Main {
         IO.println("2. Cancel Registration");
         IO.println("3. Set Grade");
         IO.println("4. Show Academic History");
+        IO.println("5. Back");
 
         int option = inputHelper.inputInteger(sc, "> ");
 
         switch (option) {
             case 1: {
-                // show students
+                showStudents(studentService.getStudents());
 
                 int studentID = inputHelper.inputInteger(sc, "ID of student to register> ");
 
-                // show courses
+                showCourses(courseService.getCourses());
 
                 int courseID = inputHelper.inputInteger(sc, "ID of course to register");
 
-                service.newRegistration(studentID, courseID);
+                // VALIDATION MISSING !!!
+                registrationService.newRegistration(studentID, courseID);
 
                 break;
             }
             case 2: {
-                // show courses
+                showStudents(studentService.getStudents());
+
+                int studentID = inputHelper.inputInteger(sc, "Studen who cancels registration> ");                
+
+                showCourses(courseService.getCoursesByRegistration(studentID));
 
                 int courseID = inputHelper.inputInteger(sc, "from which course you want to cancel registration> ");
 
-                // show students in course (id)
-
-                int studentID = inputHelper.inputInteger(sc, "Studen to cancel registration> ");
-
-                service.cancelRegistration(studentID, courseID);
+                registrationService.cancelRegistration(studentID, courseID);
 
                 break;
             }
             case 3: {
-                // show courses
-
+                showCourses(courseService.getCourses());
                 int courseID = inputHelper.inputInteger(sc, "from which course you want to set grade");
 
-                // show students in course (id)
-
+                showStudents(registrationService.getStudentsByCourse(courseID));
                 int studentID = inputHelper.inputInteger(sc, "id of student to grade");
 
-                // double grade = inputHelper.inputDouble(sc, "grade> ");
+                // Missing validation? in service
+                double grade = inputHelper.inputDouble(sc, "grade> ");
 
-                // temporal, just to compile
-                double grade = 0.0;
-
-                service.grade(studentID, courseID, grade);
+                registrationService.grade(studentID, courseID, grade);
 
                 break;
             }
             case 4: {
-                // show students
-
+                showStudents(studentService.getStudents());
                 int studentID = inputHelper.inputInteger(sc, "id of student to show academic history");
 
-                // showAcademicHistory(service, id);
+                showAcademicHistory(studentService, courseService, teacherService, registrationService, studentID);
 
+                break;
+            }
+            case 5: {
                 break;
             }
             default:
@@ -488,6 +495,26 @@ public class Main {
             showCourse(course);
         }
     }
+
+    public static void showAcademicHistory(
+        StudentService studentService,
+        CourseService courseService,
+        TeacherService teacherService,
+        RegistrationService service,
+        int studentID
+    ) {
+        IO.print("\n                       A C A D E M I C   H I S T O R Y\n\n");
+
+        IO.println("<Student>");
+        showStudent(studentService.searchByID(studentID));
+
+        IO.println("\n<Registered in>");
+        // show courses registered
+
+        
+
+    }
+
 }
 
 // FOR COMPILING> javac -d target -sourcepath src src/org/institution/app/Main.java

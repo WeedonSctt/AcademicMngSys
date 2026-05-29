@@ -41,6 +41,7 @@ public class RegistrationService {
     }
 
     public void grade(int studentID, int courseID, double grade) {
+        // Missing Validator
         Registration reg = repository.getRegistration(studentID, courseID);
 
         reg.setGrade(grade);
@@ -88,6 +89,19 @@ public class RegistrationService {
         repository.removeRegistration(studentID, courseID);
 
         return null;
+    }
+
+    public ArrayList<Integer> getCourseByStudent(int studentID){
+        ArrayList<Registration> registrations = repository.getRegistrations();
+        ArrayList<Integer> courses = new ArrayList<>();
+
+        for (Registration r : registrations) {
+            if (r.getStudentId() == studentID) {
+                courses.add(r.getCourseId());
+            }
+        }
+
+        return courses;
     }
 
 }
