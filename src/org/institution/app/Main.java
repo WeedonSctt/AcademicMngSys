@@ -10,13 +10,15 @@ import org.institution.app.util.InputHelper;
 import org.institution.app.util.Enum;
 
 public class Main {
+    private static Scanner sc = new Scanner(System.in);
+    private static StudentService studentService = new StudentService();
+    private static TeacherService teacherService = new TeacherService();
+    private static CourseService courseService = new CourseService();
+    private static RegistrationService registrationService = new RegistrationService();
+    private static InputHelper inputHelper = new InputHelper();
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        StudentService studentService = new StudentService();
-        TeacherService teacherService = new TeacherService();
-        CourseService courseService = new CourseService();
-        RegistrationService registrationService = new RegistrationService();
-        InputHelper inputHelper = new InputHelper();
+        
         boolean flow = true;
         
         do {
@@ -38,21 +40,21 @@ public class Main {
 
             switch (option) {
                 case 1:
-                    studentsMenu(sc, inputHelper, studentService);
+                    studentsMenu();
                     break;
                 case 2:
-                    teachersMenu(sc, inputHelper, teacherService);
+                    teachersMenu();
                     break;
                 case 3:
-                    coursesMenu(sc, inputHelper, courseService);
+                    coursesMenu();
                     break;
                 case 4:
-                    registrationsMenu(sc, inputHelper, registrationService, studentService, courseService, teacherService);
+                    registrationsMenu();
                     break;
                 case 5:
-                    reportsMenu(sc);
+                    reportsMenu();
                 case 6:
-                    saveMenu(sc);
+                    saveMenu();
                 case 7:
                     flow = false;
                     break;
@@ -65,7 +67,7 @@ public class Main {
         sc.close();
     }
 
-    public static void studentsMenu(Scanner sc, InputHelper inputHelper, StudentService service) {
+    public static void studentsMenu() {
         System.out.print("\n\n");
         System.out.print("                              S T U D E N T S   M E N U");
         System.out.print("\n\n");
@@ -88,13 +90,13 @@ public class Main {
                 String name = inputHelper.inputString(sc, "Student's name> ");
                 int age = inputHelper.inputInteger(sc, "Student's age> ");
                 String email = inputHelper.inputString(sc, "Student's email> ");
-                service.newStudent(name, age, email);
+                studentService.newStudent(name, age, email);
                 // missing error management
                 break;
             }
 
             case 2: {
-                showStudents(service.getStudents());
+                showStudents(studentService.getStudents());
                 
                 int id = inputHelper.inputInteger(sc, "Student's id to edit> ");
 
@@ -103,17 +105,17 @@ public class Main {
                 String email = inputHelper.inputString(sc, "Student's email> ");
                 boolean isActive = inputHelper.inputBoolean(sc, "Active user? [y/n]> ");
             
-                service.editStudentData(id, name, age, email, isActive);
+                studentService.editStudentData(id, name, age, email, isActive);
 
                 break;
             }
 
             case 3: {
-                showStudents(service.getStudents());
+                showStudents(studentService.getStudents());
 
                 int id = inputHelper.inputInteger(sc, "Student's id to delete> ");
 
-                Enum.Error error = service.deleteStudent(id);
+                Enum.Error error = studentService.deleteStudent(id);
 
                 if (error != null) {
                     System.out.println("Error: " + error);
@@ -125,7 +127,7 @@ public class Main {
             case 4: {
                 String name = inputHelper.inputString(sc, "Name of student to search> ");
 
-                ArrayList<String> student = service.searchByName(name);
+                ArrayList<String> student = studentService.searchByName(name);
 
                 if (student == null) {
                     System.out.println("Failed to search student");
@@ -139,7 +141,7 @@ public class Main {
             case 5: {
                 int id = inputHelper.inputInteger(sc, "ID of student to search> ");
 
-                ArrayList<String> student = service.searchByID(id);
+                ArrayList<String> student = studentService.searchByID(id);
 
                 if (student == null) {
                     System.out.println("Failed to search student");
@@ -151,17 +153,17 @@ public class Main {
                 break;
             }
             case 6: {
-                showStudents(service.getStudents());
+                showStudents(studentService.getStudents());
                 
                 break;
             }
             case 7: { 
-                showStudents(service.sortByAverageGrade());
+                showStudents(studentService.sortByAverageGrade());
                 
                 break; 
             }
             case 8: { 
-                showStudents(service.sortAlphabetically());
+                showStudents(studentService.sortAlphabetically());
 
                 break;
             }
@@ -174,7 +176,7 @@ public class Main {
         }
     }
     
-    public static void teachersMenu(Scanner sc, InputHelper inputHelper, TeacherService service) {
+    public static void teachersMenu() {
         System.out.print("\n\n");
         System.out.print("                      T E A C H E R S   M E N U");
         System.out.print("\n\n");
@@ -197,12 +199,12 @@ public class Main {
                 String department = inputHelper.inputString(sc, "Teacher's department> ");
                 String email = inputHelper.inputString(sc, "Teacher's email> ");
 
-                service.newTeacher(name, department, email);
+                teacherService.newTeacher(name, department, email);
 
                 break;
             }
             case 2: {
-                showTeachers(service.getTeachers());
+                showTeachers(teacherService.getTeachers());
 
                 int id = inputHelper.inputInteger(sc, "Teacher's id to edit> ");
 
@@ -210,17 +212,17 @@ public class Main {
                 String department = inputHelper.inputString(sc, "Teacher's department> ");
                 String email = inputHelper.inputString(sc, "Teacher's email> ");
 
-                service.editTeacherData(id, name, department, email);
+                teacherService.editTeacherData(id, name, department, email);
 
                 break;
             }
             case 3: {
-                showTeachers(service.getTeachers());
+                showTeachers(teacherService.getTeachers());
 
                 int id = inputHelper.inputInteger(sc, "ID from teacher to delete> ");
 
                 // Missing error handler
-                service.removeTeacher(id);
+                teacherService.removeTeacher(id);
 
                 break;
             }
@@ -228,7 +230,7 @@ public class Main {
                 String name = inputHelper.inputString(sc, "Teacher's name to search> ");
 
                 // Missing error handler
-                showTeacher(service.searchTeacherByName(name));
+                showTeacher(teacherService.searchTeacherByName(name));
 
                 break;
             }
@@ -236,22 +238,22 @@ public class Main {
                 int id = inputHelper.inputInteger(sc, "Teacher's ID to seach> ");
 
                 // Missing error handler
-                showTeacher(service.searchTeacherByID(id));
+                showTeacher(teacherService.searchTeacherByID(id));
 
                 break;
             }
             case 6: {
-                showTeachers(service.getTeachers());
+                showTeachers(teacherService.getTeachers());
                 break;
             }
             case 7: {
-                showTeachers(service.getTeachers());
+                showTeachers(teacherService.getTeachers());
 
                 // int id = inputHelper.inputInteger(sc, "ID of teacher to show assigned courses> ");
 
                 // Missing error handler
-                // Missing service method
-                // service.showAssignedCourses(id);
+                // Missing studentService method
+                // studentService.showAssignedCourses(id);
 
                 break;
             }
@@ -263,14 +265,14 @@ public class Main {
                 System.out.println("Invalid Option!");
 
                 // Just to test?
-                // teachersMenu(sc, inputHelper, service);
+                // teachersMenu(sc, inputHelper, studentService);
 
                 break;
             }
         }
     }
 
-    public static void coursesMenu(Scanner sc, InputHelper inputHelper, CourseService service) {
+    public static void coursesMenu() {
         System.out.print("\n\n");
         System.out.print("                      C O U R S E S   M E N U");
         System.out.print("\n\n");
@@ -294,12 +296,12 @@ public class Main {
                 String description = inputHelper.inputString(sc, "Course's description> ");
                 int maximumStudents = inputHelper.inputInteger(sc, "Course's maximum quota> ");
 
-                service.newCourse(name, description, maximumStudents, maximumStudents);
+                courseService.newCourse(name, description, maximumStudents, maximumStudents);
 
                 break;
             }
             case 2: {
-                showCourses(service.getCourses());
+                showCourses(courseService.getCourses());
 
                 int id = inputHelper.inputInteger(sc, "ID of course to edit> ");
 
@@ -308,16 +310,16 @@ public class Main {
                 int maximumStudents = inputHelper.inputInteger(sc, "New course's maximum quota> ");
                 // Maybe teachers id could be eedited?
 
-                service.editCourse(id, name, description, maximumStudents);
+                courseService.editCourse(id, name, description, maximumStudents);
 
                 break;
             }
             case 3: {
-                showCourses(service.getCourses());
+                showCourses(courseService.getCourses());
 
                 int id = inputHelper.inputInteger(sc, "ID of course to delete> ");
 
-                service.removeCourse(id);
+                courseService.removeCourse(id);
 
                 break;
             }
@@ -330,11 +332,11 @@ public class Main {
                 break;
             }
             case 5: {
-                showCourses(service.getCourses());
+                showCourses(courseService.getCourses());
                 break;
             }
             case 6: {
-                showCourses(service.getCourses());
+                showCourses(courseService.getCourses());
 
                 // int id = inputHelper.inputInteger(sc, "ID from which course to show students> ");
 
@@ -343,12 +345,12 @@ public class Main {
                 break;
             }
             case 7: {
-                showCourses(service.getCourses());
+                showCourses(courseService.getCourses());
 
                 int id = inputHelper.inputInteger(sc, "ID of course to show remaining quota> ");
 
                 // What the f?
-                System.out.println(service.getRemainingQuota(id));
+                System.out.println(courseService.getRemainingQuota(id));
             }
             case 8: {
                 break;
@@ -359,14 +361,7 @@ public class Main {
         }
     }
 
-    public static void registrationsMenu(
-        Scanner sc,
-        InputHelper inputHelper,
-        RegistrationService registrationService,
-        StudentService studentService,
-        CourseService courseService,
-        TeacherService teacherService
-    ) {
+    public static void registrationsMenu() {
         System.out.print("\n\n");
         System.out.print("                      R E G I S T R A T I O N S   M E N U");
         System.out.print("\n\n");
@@ -439,8 +434,8 @@ public class Main {
                 break;
         }
     }
-    public static void reportsMenu(Scanner sc) {}
-    public static void saveMenu(Scanner sc) {}
+    public static void reportsMenu() {}
+    public static void saveMenu() {}
 
     public static void showStudent(ArrayList<String> studentData) {
         String active;
