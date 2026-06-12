@@ -20,18 +20,18 @@ public class Main {
         boolean flow = true;
         
         do {
-            IO.print("\n\n");
-            IO.print("                  A C A D E M I C   M A N A G E M E N T   S Y S T E M");
-            IO.print("\n\n");
-            IO.println("                                <Choose an option>");
+            System.out.print("\n\n");
+            System.out.print("                  A C A D E M I C   M A N A G E M E N T   S Y S T E M");
+            System.out.print("\n\n");
+            System.out.println("                                <Choose an option>");
 
-            IO.println("1. Students");
-            IO.println("2. Teachers");
-            IO.println("3. Courses");
-            IO.println("4. Registrations");
-            IO.println("5. Reports");
-            IO.println("6. Save");
-            IO.println("7. Exit");
+            System.out.println("1. Students");
+            System.out.println("2. Teachers");
+            System.out.println("3. Courses");
+            System.out.println("4. Registrations");
+            System.out.println("5. Reports");
+            System.out.println("6. Save");
+            System.out.println("7. Exit");
             
             // "$>" is the placeholder to show
             int option = inputHelper.inputInteger(sc, "> ");
@@ -57,7 +57,7 @@ public class Main {
                     flow = false;
                     break;
                 default:
-                    IO.println("Invalid Option!");
+                    System.out.println("Invalid Option!");
                     break;
             }
         } while (flow);
@@ -66,20 +66,20 @@ public class Main {
     }
 
     public static void studentsMenu(Scanner sc, InputHelper inputHelper, StudentService service) {
-        IO.print("\n\n");
-        IO.print("                              S T U D E N T S   M E N U");
-        IO.print("\n\n");
-        IO.println("                                <Choose an option>");
+        System.out.print("\n\n");
+        System.out.print("                              S T U D E N T S   M E N U");
+        System.out.print("\n\n");
+        System.out.println("                                <Choose an option>");
         
-        IO.println("1. Create Student");
-        IO.println("2. Edit Student");
-        IO.println("3. Delete Student");
-        IO.println("4. Search By Name");
-        IO.println("5. Search By ID");
-        IO.println("6. Show All");
-        IO.println("7. List By Average");
-        IO.println("8. List Alphabetically");
-        IO.println("9. Back");
+        System.out.println("1. Create Student");
+        System.out.println("2. Edit Student");
+        System.out.println("3. Delete Student");
+        System.out.println("4. Search By Name");
+        System.out.println("5. Search By ID");
+        System.out.println("6. Show All");
+        System.out.println("7. List By Average");
+        System.out.println("8. List Alphabetically");
+        System.out.println("9. Back");
 
         int option = inputHelper.inputInteger(sc, "> ");
 
@@ -116,7 +116,7 @@ public class Main {
                 Enum.Error error = service.deleteStudent(id);
 
                 if (error != null) {
-                    IO.println("Error: " + error);
+                    System.out.println("Error: " + error);
                 }
 
                 break;
@@ -128,7 +128,7 @@ public class Main {
                 ArrayList<String> student = service.searchByName(name);
 
                 if (student == null) {
-                    IO.println("Failed to search student");
+                    System.out.println("Failed to search student");
                     break;
                 }
 
@@ -142,7 +142,7 @@ public class Main {
                 ArrayList<String> student = service.searchByID(id);
 
                 if (student == null) {
-                    IO.println("Failed to search student");
+                    System.out.println("Failed to search student");
                     break;
                 }
 
@@ -169,25 +169,25 @@ public class Main {
                 break;
             }
             default:
-                IO.println("Invalid Option!");
+                System.out.println("Invalid Option!");
                 break;
         }
     }
     
     public static void teachersMenu(Scanner sc, InputHelper inputHelper, TeacherService service) {
-        IO.print("\n\n");
-        IO.print("                      T E A C H E R S   M E N U");
-        IO.print("\n\n");
+        System.out.print("\n\n");
+        System.out.print("                      T E A C H E R S   M E N U");
+        System.out.print("\n\n");
 
-        IO.println("                        <Choose an option>");
-        IO.println("1. Create Teeacher");
-        IO.println("2. Edit Teacher Data");
-        IO.println("3. Delete Teacher");
-        IO.println("4. Search By Name");
-        IO.println("5. Search By ID");
-        IO.println("6. Show All");
-        IO.println("7. Show Assigned Courses");
-        IO.println("8. Back");
+        System.out.println("                        <Choose an option>");
+        System.out.println("1. Create Teeacher");
+        System.out.println("2. Edit Teacher Data");
+        System.out.println("3. Delete Teacher");
+        System.out.println("4. Search By Name");
+        System.out.println("5. Search By ID");
+        System.out.println("6. Show All");
+        System.out.println("7. Show Assigned Courses");
+        System.out.println("8. Back");
 
         int option = inputHelper.inputInteger(sc, "> ");
 
@@ -260,7 +260,7 @@ public class Main {
             }
             default: {
                 // Maybe default could return to same menu?
-                IO.println("Invalid Option!");
+                System.out.println("Invalid Option!");
 
                 // Just to test?
                 // teachersMenu(sc, inputHelper, service);
@@ -271,20 +271,20 @@ public class Main {
     }
 
     public static void coursesMenu(Scanner sc, InputHelper inputHelper, CourseService service) {
-        IO.print("\n\n");
-        IO.print("                      C O U R S E S   M E N U");
-        IO.print("\n\n");
+        System.out.print("\n\n");
+        System.out.print("                      C O U R S E S   M E N U");
+        System.out.print("\n\n");
 
-        IO.println("                       <Choose an option>");
+        System.out.println("                       <Choose an option>");
 
-        IO.println("1. Create Course");
-        IO.println("2. Edit Course");
-        IO.println("3. Delete Course");
-        IO.println("4. Assign Teacher to Course");
-        IO.println("5. Show Courses");
-        IO.println("6. Show Students in Course");
-        IO.println("7. Show Remaining Quote");
-        IO.println("8. Back");
+        System.out.println("1. Create Course");
+        System.out.println("2. Edit Course");
+        System.out.println("3. Delete Course");
+        System.out.println("4. Assign Teacher to Course");
+        System.out.println("5. Show Courses");
+        System.out.println("6. Show Students in Course");
+        System.out.println("7. Show Remaining Quote");
+        System.out.println("8. Back");
 
         int option = inputHelper.inputInteger(sc, "> ");
 
@@ -348,13 +348,13 @@ public class Main {
                 int id = inputHelper.inputInteger(sc, "ID of course to show remaining quota> ");
 
                 // What the f?
-                IO.println(service.getRemainingQuota(id));
+                System.out.println(service.getRemainingQuota(id));
             }
             case 8: {
                 break;
             }
             default:
-                IO.println("Invalid Option!");
+                System.out.println("Invalid Option!");
                 break;
         }
     }
@@ -367,17 +367,17 @@ public class Main {
         CourseService courseService,
         TeacherService teacherService
     ) {
-        IO.print("\n\n");
-        IO.print("                      R E G I S T R A T I O N S   M E N U");
-        IO.print("\n\n");
+        System.out.print("\n\n");
+        System.out.print("                      R E G I S T R A T I O N S   M E N U");
+        System.out.print("\n\n");
 
-        IO.println("                            <Choose an option>");
+        System.out.println("                            <Choose an option>");
 
-        IO.println("1. Create Registration");
-        IO.println("2. Cancel Registration");
-        IO.println("3. Set Grade");
-        IO.println("4. Show Academic History");
-        IO.println("5. Back");
+        System.out.println("1. Create Registration");
+        System.out.println("2. Cancel Registration");
+        System.out.println("3. Set Grade");
+        System.out.println("4. Show Academic History");
+        System.out.println("5. Back");
 
         int option = inputHelper.inputInteger(sc, "> ");
 
@@ -435,7 +435,7 @@ public class Main {
                 break;
             }
             default:
-                IO.println("Invalid Option!");
+                System.out.println("Invalid Option!");
                 break;
         }
     }
@@ -451,7 +451,7 @@ public class Main {
             active = "INACTIVE";
         }
         
-        IO.println(
+        System.out.println(
             studentData.get(0) + "  |  " +
             studentData.get(1) + ", " +
             studentData.get(2) + " YO  |  " +
@@ -462,7 +462,7 @@ public class Main {
 
     }
     public static void showTeacher(ArrayList<String> teacherData) {
-        IO.println(
+        System.out.println(
             teacherData.get(0) + "  |  " +
             teacherData.get(1) + "  |  " +
             teacherData.get(2) + "  |  " +
@@ -471,7 +471,7 @@ public class Main {
     }    
     public static void showCourse(ArrayList<String> courseData) {
         // A better print design should be set
-        IO.println(
+        System.out.println(
             courseData.get(0) + "  |  " +
             courseData.get(1) + "  |  " +
             courseData.get(2) + "  |  " +
@@ -503,22 +503,22 @@ public class Main {
         RegistrationService registrationService,
         int studentID
     ) {
-        IO.print("\n                       A C A D E M I C   H I S T O R Y\n\n");
+        System.out.print("\n                       A C A D E M I C   H I S T O R Y\n\n");
 
-        IO.println("<Student>");
+        System.out.println("<Student>");
         showStudent(studentService.searchByID(studentID));
 
-        IO.println("\n<Registered in>");
+        System.out.println("\n<Registered in>");
         
         ArrayList<ArrayList<String>> academicHistory = registrationService.getAcademicHistory(studentID);
 
         for (ArrayList<String> resume : academicHistory) {
-            IO.println("Course's name: " + resume.get(0));
-            IO.println("Teacher's name: " + resume.get(1));
-            IO.println("Grade: " + resume.get(2));
-            IO.println("State: " + resume.get(3));
+            System.out.println("Course's name: " + resume.get(0));
+            System.out.println("Teacher's name: " + resume.get(1));
+            System.out.println("Grade: " + resume.get(2));
+            System.out.println("State: " + resume.get(3));
             
-            IO.println();
+            System.out.println();
         }
 
         
