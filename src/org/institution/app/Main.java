@@ -500,7 +500,7 @@ public class Main {
         StudentService studentService,
         CourseService courseService,
         TeacherService teacherService,
-        RegistrationService service,
+        RegistrationService registrationService,
         int studentID
     ) {
         IO.print("\n                       A C A D E M I C   H I S T O R Y\n\n");
@@ -509,7 +509,17 @@ public class Main {
         showStudent(studentService.searchByID(studentID));
 
         IO.println("\n<Registered in>");
-        // show courses registered
+        
+        ArrayList<ArrayList<String>> academicHistory = registrationService.getAcademicHistory(studentID);
+
+        for (ArrayList<String> resume : academicHistory) {
+            IO.println("Course's name: " + resume.get(0));
+            IO.println("Teacher's name: " + resume.get(1));
+            IO.println("Grade: " + resume.get(2));
+            IO.println("State: " + resume.get(3));
+            
+            IO.println();
+        }
 
         
 

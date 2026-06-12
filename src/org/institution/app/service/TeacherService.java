@@ -68,4 +68,16 @@ public class TeacherService {
 
     }
 
+    public Teacher getTeacherByID(int id) {
+        ArrayList<Teacher> teachers = repository.getTeachers();
+
+        for (Teacher t : teachers) {
+            if (t.getID() == id) {
+                return t;
+            }
+        }
+
+        return null;
+    }
+
 }

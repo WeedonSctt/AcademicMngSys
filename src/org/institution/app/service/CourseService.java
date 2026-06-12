@@ -114,4 +114,16 @@ public class CourseService {
         return coursesData;
     }
 
+    public Course getCourseByID(int id) {
+        ArrayList<Course> courses = repository.getCourses();
+
+        for (Course c : courses) {
+            if (c.getId() == id) {
+                return c;
+            }
+        }
+
+        return null;
+    }
+
 }

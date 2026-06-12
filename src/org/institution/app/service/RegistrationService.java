@@ -6,7 +6,7 @@ package org.institution.app.service;
 import java.util.ArrayList;
 
 // PROJ PACKAGES
-import org.institution.app.model.Registration;
+import org.institution.app.model.*;
 import org.institution.app.repository.RegistrationRepository;
 import org.institution.app.util.Enum;
 import org.institution.app.util.*;
@@ -102,6 +102,49 @@ public class RegistrationService {
         }
 
         return courses;
+    }
+
+    public ArrayList<ArrayList<String>> getAcademicHistory(int studentID) {
+        ArrayList<Registration> registrations = repository.getRegistrations();
+        ArrayList<Registration> studentRegistrations = new ArrayList<>();
+        ArrayList<String> resume = new ArrayList<>();
+        ArrayList<ArrayList<String>> academicHistory = new ArrayList<>();
+
+        for (Registration r : registrations) {
+            if (r.getStudentId() == studentID) {
+                studentRegistrations.add(r);
+            }
+        }
+
+        for (Registration r : studentRegistrations) {
+            int courseID = r.getCourseId();
+
+            Course c = new CourseService().getCourseByID(courseID);
+
+            resume.add(c.getName());
+
+            int teacherID = c.getTeacherId();
+
+            resume.add(new TeacherService().getTeacherByID(teacherID).getName());
+
+            double grade = r.getGrade();
+
+            resume.add(String.valueOf(grade));
+
+
+            String state;
+            if (grade >= 6.0) {
+                state = "APROVED";
+            } else {
+                state = "FAILED";
+            }
+
+            resume.add(state);
+
+            academicHistory.add(resume);
+        }
+
+        return academicHistory;
     }
 
 }
