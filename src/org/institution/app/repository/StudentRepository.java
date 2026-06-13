@@ -94,6 +94,17 @@ public class StudentRepository {
             ));
         }
 
+        int lastID = 0;
+        for (Student s : students) {
+            int studentID = s.getId();
+
+            if (studentID > lastID) {
+                lastID = studentID;
+            }
+        }
+
+        this.lastID = lastID;
+
         return true;
     }
 

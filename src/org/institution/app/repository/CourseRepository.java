@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 // PROJ PACKAGES
 import org.institution.app.model.Course;
+import org.institution.app.model.Teacher;
 import org.institution.app.util.FileManager;
 import org.institution.app.util.Helper;
 
@@ -79,6 +80,17 @@ public class CourseRepository {
                 Integer.parseInt(array.get(4))
             ));
         }
+
+        int lastID = 0;
+        for (Course c : courses) {
+            int courseID = c.getId();
+
+            if (courseID > lastID) {
+                lastID = courseID;
+            }
+        }
+
+        this.lastID = lastID;
 
         return true;
     }

@@ -97,6 +97,17 @@ public class TeacherRepository {
             ));
         }
 
+        int lastID = 0;
+        for (Teacher t : teachers) {
+            int teacherID = t.getID();
+
+            if (teacherID > lastID) {
+                lastID = teacherID;
+            }
+        }
+
+        this.lastID = lastID;
+
         return true;
     }
 
