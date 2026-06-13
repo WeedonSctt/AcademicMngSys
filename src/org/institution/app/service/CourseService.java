@@ -130,4 +130,8 @@ public class CourseService {
         return repository.saveCoursesToCSV();
     }
 
+    public boolean loadRepo() {
+        return repository.loadCoursesFromCSV();
+    }
+
 }

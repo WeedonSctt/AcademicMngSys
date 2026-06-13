@@ -151,4 +151,8 @@ public class RegistrationService {
         return repository.saveRegistrationsToCSV();
     }
 
+    public boolean loadRepo() {
+        return repository.loadRegistrationsFromCSV();
+    }
+
 }

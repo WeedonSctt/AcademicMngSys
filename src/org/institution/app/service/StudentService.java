@@ -119,4 +119,8 @@ public class StudentService {
         return repository.saveStudentsToCSV();
     }
 
+    public boolean loadRepo() {
+        return repository.loadStudentsFromCSV();
+    }
+
 }

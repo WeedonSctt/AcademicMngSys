@@ -84,4 +84,8 @@ public class TeacherService {
         return repository.saveTeachersToCSV();
     }
 
+    public boolean loadRepo() {
+        return repository.loadTeachersFromCSV();
+    }
+
 }

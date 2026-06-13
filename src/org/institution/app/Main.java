@@ -20,6 +20,15 @@ public class Main {
     static void main() {
         
         boolean flow = true;
+
+        if (!studentService.loadRepo() |
+        !teacherService.loadRepo() |
+        !courseService.loadRepo() |
+        !registrationService.loadRepo()) {
+            System.out.println("> Error: Something went wrong while loading data.");
+        } else {
+            System.out.println("> Loading data...");
+        }
         
         do {
             System.out.print("\n\n");
