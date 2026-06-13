@@ -51,9 +51,12 @@ public class TeacherService {
     public ArrayList<String> searchTeacherByName(String name) {
         Teacher t = repository.getTeacherByName(name);
 
-        ArrayList<String> teacherData = Helper.teacherToStringArray(t);
+        if (t != null) {
+            ArrayList<String> teacherData = Helper.teacherToStringArray(t);
+            return teacherData;
+        }
 
-        return teacherData;
+        return null;
     }
 
     public ArrayList<ArrayList<String>> getTeachers() {
