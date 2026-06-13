@@ -10,14 +10,14 @@ import org.institution.app.util.InputHelper;
 import org.institution.app.util.Enum;
 
 public class Main {
-    private static Scanner sc = new Scanner(System.in);
-    private static StudentService studentService = new StudentService();
-    private static TeacherService teacherService = new TeacherService();
-    private static CourseService courseService = new CourseService();
-    private static RegistrationService registrationService = new RegistrationService();
-    private static InputHelper inputHelper = new InputHelper();
+    final private static Scanner sc = new Scanner(System.in);
+    final private static StudentService studentService = new StudentService();
+    final private static TeacherService teacherService = new TeacherService();
+    final private static CourseService courseService = new CourseService();
+    final private static RegistrationService registrationService = new RegistrationService();
+    final private static InputHelper inputHelper = new InputHelper();
 
-    public static void main(String[] args) {
+    static void main() {
         
         boolean flow = true;
         
@@ -54,10 +54,10 @@ public class Main {
                 case 5:
                     reportsMenu();
                 case 6:
-                    if (studentService.save() == false |
-                        courseService.save() == false |
-                        teacherService.save() == false |
-                        registrationService.save() == false) {
+                    if (!studentService.save() |
+                        !courseService.save() |
+                        !teacherService.save() |
+                        !registrationService.save()) {
                         System.out.println("ERROR: Something went wrong while saving data.");
                     } else {
                         System.out.println("Data saved correctly!");
@@ -191,7 +191,7 @@ public class Main {
         System.out.print("\n\n");
 
         System.out.println("                        <Choose an option>");
-        System.out.println("1. Create Teeacher");
+        System.out.println("1. Create Teacher");
         System.out.println("2. Edit Teacher Data");
         System.out.println("3. Delete Teacher");
         System.out.println("4. Search By Name");
@@ -244,7 +244,7 @@ public class Main {
                 break;
             }
             case 5: {
-                int id = inputHelper.inputInteger(sc, "Teacher's ID to seach> ");
+                int id = inputHelper.inputInteger(sc, "Teacher's ID to search> ");
 
                 // Missing error handler
                 showTeacher(teacherService.searchTeacherByID(id));
@@ -317,7 +317,7 @@ public class Main {
                 String name = inputHelper.inputString(sc, "New course's name> ");
                 String description = inputHelper.inputString(sc, "New course's description> ");
                 int maximumStudents = inputHelper.inputInteger(sc, "New course's maximum quota> ");
-                // Maybe teachers id could be eedited?
+                // Maybe teachers id could be edited?
 
                 courseService.editCourse(id, name, description, maximumStudents);
 
@@ -403,7 +403,7 @@ public class Main {
             case 2: {
                 showStudents(studentService.getStudents());
 
-                int studentID = inputHelper.inputInteger(sc, "Studen who cancels registration> ");                
+                int studentID = inputHelper.inputInteger(sc, "Student who cancels registration> ");
 
                 showCourses(courseService.getCoursesByRegistration(studentID));
 
@@ -444,12 +444,11 @@ public class Main {
         }
     }
     public static void reportsMenu() {}
-    public static void saveMenu() {}
 
     public static void showStudent(ArrayList<String> studentData) {
         String active;
         
-        if (studentData.get(5) == "true") {
+        if (studentData.get(5).equals("true")) {
             active = "ACTIVE";
         } else {
             active = "INACTIVE";
