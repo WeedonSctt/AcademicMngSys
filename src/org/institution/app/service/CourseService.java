@@ -126,4 +126,8 @@ public class CourseService {
         return null;
     }
 
+    public boolean save() {
+        return repository.saveCoursesToCSV();
+    }
+
 }

@@ -147,4 +147,8 @@ public class RegistrationService {
         return academicHistory;
     }
 
+    public boolean save() {
+        return repository.saveRegistrationsToCSV();
+    }
+
 }

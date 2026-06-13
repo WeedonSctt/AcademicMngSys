@@ -16,8 +16,6 @@ public class StudentRepository {
     private FileManager reader = new FileManager();
     private FileManager writer = new FileManager();
     private int lastID;
-    
-    // private Scannner sc = new Scanner();
 
     public StudentRepository() {
         // Missing to check last if from data saved

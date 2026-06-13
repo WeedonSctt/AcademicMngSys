@@ -80,4 +80,8 @@ public class TeacherService {
         return null;
     }
 
+    public boolean save() {
+        return repository.saveTeachersToCSV();
+    }
+
 }

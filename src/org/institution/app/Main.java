@@ -54,7 +54,13 @@ public class Main {
                 case 5:
                     reportsMenu();
                 case 6:
-                    saveMenu();
+                    studentService.save();
+                    courseService.save();
+                    teacherService.save();
+                    registrationService.save();
+
+                    break;
+
                 case 7:
                     flow = false;
                     break;
@@ -422,7 +428,7 @@ public class Main {
                 showStudents(studentService.getStudents());
                 int studentID = inputHelper.inputInteger(sc, "id of student to show academic history");
 
-                showAcademicHistory(studentService, courseService, teacherService, registrationService, studentID);
+                showAcademicHistory(studentID);
 
                 break;
             }
@@ -491,13 +497,7 @@ public class Main {
         }
     }
 
-    public static void showAcademicHistory(
-        StudentService studentService,
-        CourseService courseService,
-        TeacherService teacherService,
-        RegistrationService registrationService,
-        int studentID
-    ) {
+    public static void showAcademicHistory(int studentID) {
         System.out.print("\n                       A C A D E M I C   H I S T O R Y\n\n");
 
         System.out.println("<Student>");
