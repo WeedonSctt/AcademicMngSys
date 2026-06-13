@@ -54,13 +54,16 @@ public class Main {
                 case 5:
                     reportsMenu();
                 case 6:
-                    studentService.save();
-                    courseService.save();
-                    teacherService.save();
-                    registrationService.save();
+                    if (studentService.save() == false |
+                        courseService.save() == false |
+                        teacherService.save() == false |
+                        registrationService.save() == false) {
+                        System.out.println("ERROR: Something went wrong while saving data.");
+                    } else {
+                        System.out.println("Data saved correctly!");
+                    }
 
                     break;
-
                 case 7:
                     flow = false;
                     break;
