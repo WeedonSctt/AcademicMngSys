@@ -71,7 +71,7 @@ public class TeacherRepository {
         }
 
         try {
-            writer.writeToFile("teacher.txt", teachersData);
+            writer.writeToFile("teachers.txt", teachersData);
         } catch (IOException e) {
             return false;
         }
