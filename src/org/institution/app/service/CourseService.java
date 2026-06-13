@@ -36,7 +36,7 @@ public class CourseService {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
-        repository.newCourse(repository.getLastID(), name, description, maximumStudents, teacherID);
+        repository.newCourse(repository.getLastID() + 1, name, description, maximumStudents, teacherID);
         
         return null;
     }

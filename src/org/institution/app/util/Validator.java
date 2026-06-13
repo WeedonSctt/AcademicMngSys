@@ -29,14 +29,12 @@ public class Validator {
     }
 
     public boolean validateCourseInputData(int maximumStudents, int teacherID) {
-        if (maximumStudents < 0 && maximumStudents > 50) {
+        if (maximumStudents < 0 || maximumStudents > 50) {
             return false;
         }
 
-        if (!Helper.existTeacher(teacherID)) {
+        if (!Helper.existTeacher(teacherID) && teacherID != -1) {
             return false;
-        } else if (teacherID == -1) {
-            return true;
         }
 
         return true;

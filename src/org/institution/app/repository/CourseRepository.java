@@ -15,6 +15,10 @@ public class CourseRepository {
     private FileManager reader = new FileManager();
     private FileManager writer = new FileManager();
 
+    public CourseRepository() {
+        this.lastID = 0;
+    }
+
     public ArrayList<Course> getCourses() {
         return courses;
     }

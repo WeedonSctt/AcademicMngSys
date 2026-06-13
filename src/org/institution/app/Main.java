@@ -63,18 +63,11 @@ public class Main {
                 case 5:
                     reportsMenu();
                 case 6:
-                    if (!studentService.save() |
-                        !courseService.save() |
-                        !teacherService.save() |
-                        !registrationService.save()) {
-                        System.out.println("ERROR: Something went wrong while saving data.");
-                    } else {
-                        System.out.println("Data saved correctly!");
-                    }
-
+                    save();
                     break;
                 case 7:
                     flow = false;
+                    save();
                     break;
                 default:
                     System.out.println("Invalid Option!");
@@ -314,7 +307,9 @@ public class Main {
                 String description = inputHelper.inputString(sc, "Course's description> ");
                 int maximumStudents = inputHelper.inputInteger(sc, "Course's maximum quota> ");
 
-                courseService.newCourse(name, description, maximumStudents, maximumStudents);
+                if (courseService.newCourse(name, description, maximumStudents, -1) == Enum.Error.WRONG_INPUT_DATA) {
+                    System.out.println("failed");
+                }
 
                 break;
             }
@@ -529,6 +524,17 @@ public class Main {
 
         
 
+    }
+
+    public static void save() {
+        if (!studentService.save() |
+                !courseService.save() |
+                !teacherService.save() |
+                !registrationService.save()) {
+            System.out.println("ERROR: Something went wrong while saving data.");
+        } else {
+            System.out.println("Data saved correctly!");
+        }
     }
 
 }
