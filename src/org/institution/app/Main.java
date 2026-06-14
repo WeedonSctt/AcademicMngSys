@@ -260,11 +260,14 @@ public class Main {
             case 7: {
                 showTeachers(teacherService.getTeachers());
 
-                // int id = inputHelper.inputInteger(sc, "ID of teacher to show assigned courses> ");
+                int id = inputHelper.inputInteger(sc, "ID of teacher to show assigned courses> ");
 
-                // Missing error handler
-                // Missing studentService method
-                // studentService.showAssignedCourses(id);
+                if (!teacherService.existTeacher(id)) {
+                    System.out.println("Error: TEACHER DOES NOT EXIST");
+                    break;
+                }
+
+                showCourses(courseService.getAssignedCourses(id));
 
                 break;
             }
