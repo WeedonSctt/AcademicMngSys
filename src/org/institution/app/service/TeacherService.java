@@ -2,6 +2,7 @@ package org.institution.app.service;
 
 import java.util.ArrayList;
 
+import org.institution.app.model.Student;
 import org.institution.app.model.Teacher;
 import org.institution.app.repository.TeacherRepository;
 import org.institution.app.util.Validator;
@@ -89,6 +90,16 @@ public class TeacherService {
 
     public boolean loadRepo() {
         return repository.loadTeachersFromCSV();
+    }
+
+    public boolean existTeacher(int id) {
+        for (Teacher t : repository.getTeachers()) {
+            if (t.getID() == id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
