@@ -11,6 +11,7 @@ public class Enum {
         TEACHER_NOT_FOUND,
         FILE_NOT_FOUND,
         COULD_NOT_WRITE_TO_FILE,
+	ALREADY_CREATED,
         
     }
 

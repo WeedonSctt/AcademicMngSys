@@ -23,11 +23,20 @@ public class RegistrationService {
     }
 
     public Enum.Error newRegistration(int studentID, int courseID) {
-        // Validator
-        // Missing to validate if there's yet a registration with same id's
-
         if (!studentService.existStudent(studentID) || !courseService.existCourse(courseID)) {
             return Enum.Error.WRONG_INPUT_DATA;
+        }
+
+        Course c = courseService.getCourseByID(courseID);
+
+        if (c.getTeacherId() == -1) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
+
+        for (Registration r : repository.getRegistrations()) {
+            if (r.getCourseId() == courseID && r.getStudentId() == studentID) {
+                return Enum.Error.ALREADY_CREATED;
+            }
         }
 
         repository.newRegistration(studentID, courseID);
@@ -35,7 +44,6 @@ public class RegistrationService {
         return null;
     }
 
-    // maybe stupid
     public void setAverageGrade(int studentID, ArrayList<Double> grades) {
         
         double sum = 0;
@@ -46,13 +54,22 @@ public class RegistrationService {
         studentService.setAverageGrade(studentID, sum/grades.size());
     }
 
-    public void grade(int studentID, int courseID, double grade) {
-        // Missing Validator
+    public Enum.Error grade(int studentID, int courseID, double grade) {
         Registration reg = repository.getRegistration(studentID, courseID);
+
+        if (reg == null) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
+
+        if (grade < 0.0 || grade > 10.0) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
 
         reg.setGrade(grade);
         ArrayList<Double> grades = repository.getStudentGrades(studentID);
         setAverageGrade(studentID, grades);
+
+        return null;
     }
 
     public void removeStudentRegistrations(int studentID) {
@@ -99,18 +116,23 @@ public class RegistrationService {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
+        if (repository.getRegistration(studentID, courseID) == null) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
+
         repository.removeRegistration(studentID, courseID);
+        setAverageGrade(studentID, repository.getStudentGrades(studentID));
 
         return null;
     }
 
     public ArrayList<ArrayList<String>> getAcademicHistory(int studentID) {
         ArrayList<Registration> registrations = repository.getRegistrations();
-        ArrayList<String> resume = new ArrayList<>();
         ArrayList<ArrayList<String>> academicHistory = new ArrayList<>();
 
         for (Registration r : registrations) {
             if (r.getStudentId() == studentID) {
+                ArrayList<String> resume = new ArrayList<>();
                 int courseID = r.getCourseId();
 
                 Course c = courseService.getCourseByID(courseID);

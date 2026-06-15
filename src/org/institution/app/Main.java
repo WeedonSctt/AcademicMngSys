@@ -435,8 +435,9 @@ public class Main {
 
                 int courseID = inputHelper.inputInteger(sc, "ID of course to register");
 
-                // VALIDATION MISSING !!!
-                registrationService.newRegistration(studentID, courseID);
+                if (registrationService.newRegistration(studentID, courseID) != null) {
+                    System.out.println("Error: Error occurred");
+                }
 
                 break;
             }
@@ -449,7 +450,9 @@ public class Main {
 
                 int courseID = inputHelper.inputInteger(sc, "from which course you want to cancel registration> ");
 
-                registrationService.cancelRegistration(studentID, courseID);
+                if (registrationService.cancelRegistration(studentID, courseID) != null) {
+                    System.out.println("Error: Error occurred");
+                }
 
                 break;
             }
@@ -463,13 +466,20 @@ public class Main {
                 // Missing validation? in service
                 double grade = inputHelper.inputDouble(sc, "grade> ");
 
-                registrationService.grade(studentID, courseID, grade);
+                if (registrationService.grade(studentID, courseID, grade) != null) {
+                    System.out.println("Error: Error occurred");
+                }
 
                 break;
             }
             case 4: {
                 showStudents(studentService.getStudents());
                 int studentID = inputHelper.inputInteger(sc, "id of student to show academic history");
+
+                if (!studentService.existStudent(studentID)) {
+                    System.out.println("Error: Student dont exists");
+                    break;
+                }
 
                 showAcademicHistory(studentID);
 

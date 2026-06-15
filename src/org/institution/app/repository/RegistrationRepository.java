@@ -41,12 +41,16 @@ public class RegistrationRepository {
     }
 
     public void removeRegistration(int studentID, int courseID) {
-        
-        for (Registration r : registrations) {
+        for (int i = 0; i < registrations.size(); i++) {
+            Registration r = registrations.get(i);
+
             if (r.getStudentId() == studentID && r.getCourseId() == courseID) {
                 registrations.remove(r);
+
+                break;
             }
         }
+
     }
 
     public void removeRegistrationsIndexes(ArrayList<Integer> indexes) {
