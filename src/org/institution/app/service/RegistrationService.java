@@ -1,5 +1,3 @@
-// Missing 'Ver historial académico' from chatgpt md
-
 package org.institution.app.service;
 
 // JAVA LIBS
@@ -12,13 +10,23 @@ import org.institution.app.util.Enum;
 import org.institution.app.util.*;
 
 public class RegistrationService {
-    private RegistrationRepository repository = new RegistrationRepository();
-    private Validator validator = new Validator();
+    private final RegistrationRepository repository;
+    private final StudentService studentService;
+    private final CourseService courseService;
+    private final TeacherService teacherService;
+
+    public RegistrationService(RegistrationRepository repo, CourseService cSer, StudentService sSer, TeacherService tSer) {
+        this.repository = repo;
+        this.courseService = cSer;
+        this.studentService = sSer;
+        this.teacherService = tSer;
+    }
 
     public Enum.Error newRegistration(int studentID, int courseID) {
         // Validator
         // Missing to validate if there's yet a registration with same id's
-        if (!validator.validateRegistrationInputData(studentID, courseID)) {
+
+        if (!studentService.existStudent(studentID) || !courseService.existCourse(courseID)) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
@@ -30,14 +38,12 @@ public class RegistrationService {
     // maybe stupid
     public void setAverageGrade(int studentID, ArrayList<Double> grades) {
         
-        int sum = 0;
+        double sum = 0;
         for (double g : grades) {
             sum += g;
         }
 
-        // HAVE TO USE HELPER
-        StudentService service = new StudentService();
-        service.setAverageGrade(studentID, sum/grades.size());
+        studentService.setAverageGrade(studentID, sum/grades.size());
     }
 
     public void grade(int studentID, int courseID, double grade) {
@@ -63,26 +69,29 @@ public class RegistrationService {
         }
 
         repository.removeRegistrationsIndexes(indexes);
-
-        return;
     }
 
-    public ArrayList<ArrayList<String>> getStudentsByCourse(int courseID) {
+    public ArrayList<ArrayList<String>> getEnrolledCourses(int courseID) {
         ArrayList<Registration> registrations = repository.getRegistrations();
-        ArrayList<Registration> courseRegistrations = new ArrayList<>();
+        ArrayList<Course> coursesEnrolled = new ArrayList<>();
+        ArrayList<ArrayList<String>> coursesData = new ArrayList<>();
 
         for (Registration r : registrations) {
             if (r.getCourseId() == courseID) {
-                courseRegistrations.add(r);
+                coursesEnrolled.add(courseService.getCourseByID(r.getCourseId()));
             }
         }
 
-        return Helper.studentsInCourse(courseRegistrations, courseID);
+        for (Course c : coursesEnrolled) {
+            coursesData.add(Helper.courseToStringArray(c));
+        }
+
+        return coursesData;
 
     }    
 
     public Enum.Error cancelRegistration(int studentID, int courseID) {
-        if (!Helper.existStudent(studentID) || !Helper.existCourse(courseID)) {
+        if (!studentService.existStudent(studentID) || !courseService.existCourse(courseID)) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
@@ -91,57 +100,39 @@ public class RegistrationService {
         return null;
     }
 
-    public ArrayList<Integer> getCourseByStudent(int studentID){
-        ArrayList<Registration> registrations = repository.getRegistrations();
-        ArrayList<Integer> courses = new ArrayList<>();
-
-        for (Registration r : registrations) {
-            if (r.getStudentId() == studentID) {
-                courses.add(r.getCourseId());
-            }
-        }
-
-        return courses;
-    }
-
     public ArrayList<ArrayList<String>> getAcademicHistory(int studentID) {
         ArrayList<Registration> registrations = repository.getRegistrations();
-        ArrayList<Registration> studentRegistrations = new ArrayList<>();
         ArrayList<String> resume = new ArrayList<>();
         ArrayList<ArrayList<String>> academicHistory = new ArrayList<>();
 
         for (Registration r : registrations) {
             if (r.getStudentId() == studentID) {
-                studentRegistrations.add(r);
+                int courseID = r.getCourseId();
+
+                Course c = courseService.getCourseByID(courseID);
+
+                resume.add(c.getName());
+
+                int teacherID = c.getTeacherId();
+
+                resume.add(teacherService.getTeacherByID(teacherID).getName());
+
+                double grade = r.getGrade();
+
+                resume.add(String.valueOf(grade));
+
+
+                String state;
+                if (grade >= 6.0) {
+                    state = "APPROVED";
+                } else {
+                    state = "FAILED";
+                }
+
+                resume.add(state);
+
+                academicHistory.add(resume);
             }
-        }
-
-        for (Registration r : studentRegistrations) {
-            int courseID = r.getCourseId();
-
-            Course c = new CourseService().getCourseByID(courseID);
-
-            resume.add(c.getName());
-
-            int teacherID = c.getTeacherId();
-
-            resume.add(new TeacherService().getTeacherByID(teacherID).getName());
-
-            double grade = r.getGrade();
-
-            resume.add(String.valueOf(grade));
-
-
-            String state;
-            if (grade >= 6.0) {
-                state = "APROVED";
-            } else {
-                state = "FAILED";
-            }
-
-            resume.add(state);
-
-            academicHistory.add(resume);
         }
 
         return academicHistory;
@@ -153,6 +144,38 @@ public class RegistrationService {
 
     public boolean loadRepo() {
         return repository.loadRegistrationsFromCSV();
+    }
+
+    public ArrayList<ArrayList<String>> getCoursesEnrolledByStudent(int studentID) {
+        ArrayList<ArrayList<String>> coursesData = new ArrayList<>();
+        ArrayList<Integer> coursesID = new ArrayList<>();
+
+        for (Registration r : repository.getRegistrations()) {
+            if (r.getStudentId() == studentID) {
+                coursesID.add(r.getCourseId());
+            }
+        }
+
+        for (int i : coursesID) {
+            coursesData.add(Helper.courseToStringArray(courseService.getCourseByID(i)));
+        }
+
+        return coursesData;
+    }
+
+    public int getCourseRemainingQuota(int courseID) {
+        ArrayList<Registration> registrations = repository.getRegistrations();
+
+        int enrolled = 0;
+        for (Registration r : registrations) {
+            if (r.getCourseId() == courseID) {
+                enrolled += 1;
+            }
+        }
+
+        int maxQuota = courseService.getCourseByID(courseID).getMaximumStudents();
+
+        return maxQuota - enrolled;
     }
 
 }

@@ -5,16 +5,26 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 // PROJECT PACKAGE
+import org.institution.app.repository.*;
 import org.institution.app.service.*;
-import org.institution.app.util.InputHelper;
 import org.institution.app.util.Enum;
+import org.institution.app.util.*;
 
 public class Main {
     final private static Scanner sc = new Scanner(System.in);
-    final private static StudentService studentService = new StudentService();
-    final private static TeacherService teacherService = new TeacherService();
-    final private static CourseService courseService = new CourseService();
-    final private static RegistrationService registrationService = new RegistrationService();
+
+    // repositories initialization
+    final private static StudentRepository studentRepository = new StudentRepository();
+    final private static TeacherRepository teacherRepository = new TeacherRepository();
+    final private static CourseRepository courseRepository = new CourseRepository();
+    final private static RegistrationRepository registrationRepository = new RegistrationRepository();
+
+    // services initialization | dependencies injection
+    final private static StudentService studentService = new StudentService(studentRepository);
+    final private static TeacherService teacherService = new TeacherService(teacherRepository);
+    final private static CourseService courseService = new CourseService(courseRepository, teacherService);
+    final private static RegistrationService registrationService = new RegistrationService(registrationRepository, courseService, studentService, teacherService);
+
     final private static InputHelper inputHelper = new InputHelper();
 
     static void main() {
@@ -365,8 +375,7 @@ public class Main {
 
                 int id = inputHelper.inputInteger(sc, "ID of course to show remaining quota> ");
 
-                // What the f?
-                System.out.println(courseService.getRemainingQuota(id));
+                System.out.println(registrationService.getCourseRemainingQuota(id));
             }
             case 8: {
                 break;
@@ -412,7 +421,7 @@ public class Main {
 
                 int studentID = inputHelper.inputInteger(sc, "Student who cancels registration> ");
 
-                showCourses(courseService.getCoursesByRegistration(studentID));
+                showCourses(registrationService.getCoursesEnrolledByStudent(studentID));
 
                 int courseID = inputHelper.inputInteger(sc, "from which course you want to cancel registration> ");
 
@@ -424,7 +433,7 @@ public class Main {
                 showCourses(courseService.getCourses());
                 int courseID = inputHelper.inputInteger(sc, "from which course you want to set grade");
 
-                showStudents(registrationService.getStudentsByCourse(courseID));
+                showStudents(registrationService.getEnrolledCourses(courseID));
                 int studentID = inputHelper.inputInteger(sc, "id of student to grade");
 
                 // Missing validation? in service

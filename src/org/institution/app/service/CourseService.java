@@ -10,13 +10,18 @@ import org.institution.app.util.Enum;
 import org.institution.app.util.*;
 
 public class CourseService {
-    private CourseRepository repository = new CourseRepository();
-    private Validator validator = new Validator();
+    private final CourseRepository repository;
+    private final TeacherService teacherService;
+
+    public CourseService(CourseRepository repo, TeacherService teacherService) {
+        this.repository = repo;
+        this.teacherService = teacherService;
+    }
 
     public ArrayList<ArrayList<String>> getAssignedCourses(int teacherID) {
         ArrayList<Course> courses = repository.getCourses();
         ArrayList<Course> assignedCourses = new ArrayList<>();
-        ArrayList<ArrayList<String>> assignedCoursesString = new ArrayList<>();
+        ArrayList<ArrayList<String>> assignedCoursesData = new ArrayList<>();
 
         for (Course c : courses) {
             if (c.getTeacherId() == teacherID) {
@@ -24,15 +29,19 @@ public class CourseService {
             }
         }
 
-        for (int i = 0; i < assignedCourses.size(); i++) {
-            assignedCoursesString.add(Helper.courseToStringArray(assignedCourses.get(i)));
+        for (Course c : assignedCourses) {
+            assignedCoursesData.add(Helper.courseToStringArray(c));
         }
 
-        return assignedCoursesString;
+        return assignedCoursesData;
     }
 
     public Enum.Error newCourse(String name, String description, int maximumStudents, int teacherID) {
-        if (!validator.validateCourseInputData(maximumStudents, teacherID)) {
+        if (maximumStudents < 0 || maximumStudents > 50) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
+
+        if (!teacherService.existTeacher(teacherID)) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
@@ -42,7 +51,7 @@ public class CourseService {
     }
 
     public Enum.Error editCourse(int id, String name, String description, int maximumStudents) {
-        if (!validator.validateCourseInputData(maximumStudents, -1)) {
+        if (maximumStudents < 0 || maximumStudents > 50) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
         
@@ -60,23 +69,13 @@ public class CourseService {
 
         // Missing verification if course exists
 
-        if (!Helper.existTeacher(teacherID)) {
+        if (!teacherService.existTeacher(teacherID)) {
             return Enum.Error.TEACHER_NOT_FOUND;
         }
 
         c.setTeacherId(teacherID);
 
         return null;
-    }
-
-    public int getRemainingQuota(int courseID) {
-        Course c = repository.getCourseByID(courseID);
-
-        int currentRegistrations = Helper.getRegistrationsForCourse(courseID);
-
-        int remain = c.getMaximumStudents() - currentRegistrations;
-
-        return remain;
     }
 
     public boolean removeCourse(int courseID) {
@@ -102,18 +101,6 @@ public class CourseService {
         return coursesData;
     }
 
-    public ArrayList<ArrayList<String>> getCoursesByRegistration(int studentID) {
-        ArrayList<ArrayList<String>> coursesData = new ArrayList<>();
-
-        ArrayList<Integer> coursesID = new RegistrationService().getCourseByStudent(studentID);
-
-        for (int i : coursesID) {
-            coursesData.add(Helper.courseToStringArray(repository.getCourseByID(i)));
-        }
-
-        return coursesData;
-    }
-
     public Course getCourseByID(int id) {
         ArrayList<Course> courses = repository.getCourses();
 
@@ -132,6 +119,16 @@ public class CourseService {
 
     public boolean loadRepo() {
         return repository.loadCoursesFromCSV();
+    }
+
+    public boolean existCourse(int id) {
+        for (Course c : repository.getCourses()) {
+            if (c.getId() == id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

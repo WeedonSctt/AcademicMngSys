@@ -1,46 +1,10 @@
 package org.institution.app.util;
 
 // PROJ PACKAGES
-// import org.institution.app.util.Helper;
+import org.institution.app.service.*;
 
 public class Validator {
-    
-    
-    public boolean validateStudentInputData(String name, int age, String email) {
-        
-        if (age < 18) {
-            return false;
-        }
-
-        if (!emailHasExtension(email)) {
-            return false;
-        }
-
-        return true;
-    }
-    
-    public boolean validateStudentInputData(String email) {
-
-        if (!emailHasExtension(email)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public boolean validateCourseInputData(int maximumStudents, int teacherID) {
-        if (maximumStudents < 0 || maximumStudents > 50) {
-            return false;
-        }
-
-        if (!Helper.existTeacher(teacherID) && teacherID != -1) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean emailHasExtension(String e) {
+    public static boolean emailHasExtension(String e) {
         // MISSING TO CHECK IF IT HAS 'gmail/outlook/whatever'
         
         char[] characters = e.toCharArray();
@@ -69,10 +33,16 @@ public class Validator {
         return false;
     }
 
-    public boolean validateRegistrationInputData(int studentID, int courseID) {
-        if (!Helper.existStudent(studentID)) {
+    public static boolean studentInputData(int age, String email) {
+        if (age < 18 || !emailHasExtension(email)) {
             return false;
-        } else if (!Helper.existCourse(courseID)) {
+        }
+
+        return true;
+    }
+
+    public static boolean teacherInputData(String email) {
+        if (!emailHasExtension(email)) {
             return false;
         }
 

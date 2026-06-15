@@ -1,20 +1,20 @@
 package org.institution.app.service;
 
 import java.util.ArrayList;
-
-import org.institution.app.model.Student;
 import org.institution.app.model.Teacher;
 import org.institution.app.repository.TeacherRepository;
-import org.institution.app.util.Validator;
 import org.institution.app.util.Enum;
-import org.institution.app.util.Helper;
+import org.institution.app.util.*;
 
 public class TeacherService {
-    Validator validator = new Validator();
-    TeacherRepository repository = new TeacherRepository();
+    private final TeacherRepository repository;
+
+    public TeacherService(TeacherRepository repo) {
+        this.repository = repo;
+    }
     
     public Enum.Error newTeacher(String name, String department, String email) {
-        if (!validator.validateStudentInputData(email)) {
+        if (!Validator.teacherInputData(email)) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
@@ -24,7 +24,7 @@ public class TeacherService {
     }
 
     public Enum.Error editTeacherData(int id, String name, String department, String email) {
-        if (!validator.validateStudentInputData(email)) {
+        if (!Validator.teacherInputData(email)) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
@@ -44,17 +44,14 @@ public class TeacherService {
     public ArrayList<String> searchTeacherByID(int id) {
         Teacher t = repository.getTeacherByID(id);
 
-        ArrayList<String> teacherData = Helper.teacherToStringArray(t);
-
-        return teacherData;
+        return Helper.teacherToStringArray(t);
     }
 
     public ArrayList<String> searchTeacherByName(String name) {
         Teacher t = repository.getTeacherByName(name);
 
         if (t != null) {
-            ArrayList<String> teacherData = Helper.teacherToStringArray(t);
-            return teacherData;
+            return Helper.teacherToStringArray(t);
         }
 
         return null;

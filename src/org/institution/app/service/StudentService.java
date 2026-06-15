@@ -10,25 +10,25 @@ import org.institution.app.repository.StudentRepository;
 import org.institution.app.model.Student;
 
 public class StudentService {
-    Validator validator = new Validator();
-    StudentRepository repository = new StudentRepository();
+    private final StudentRepository repository;
+
+    public StudentService(StudentRepository repo) {
+        this.repository = repo;
+    }
 
     // ENUM.ERROR PROVISIONAL
     public Enum.Error newStudent(String name, int age, String email) {
-        if (!validator.validateStudentInputData(name ,age, email)) {
+        if (!Validator.studentInputData(age, email)) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
-
         // Maybe check if there's another student with same metadata?
-        
         repository.newStudent(repository.getLastID() + 1, name, age, email);
 
         return null;
-
     }
 
     public Enum.Error editStudentData(int id, String name, int age, String email, boolean isActive) {
-        if (!validator.validateStudentInputData(name, age, email)) {
+        if (!Validator.studentInputData(age, email)) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
         
@@ -45,7 +45,7 @@ public class StudentService {
     public Enum.Error deleteStudent(int studentID) {
         Student s = repository.getStudentByID(studentID);
         
-        if (s.isActive() == true) {
+        if (s.isActive()) {
             return Enum.Error.ACTIVE_STUDENT;
         }
 
@@ -57,18 +57,14 @@ public class StudentService {
     public ArrayList<String> searchByName(String name) {
         Student s = repository.getStudentByName(name);
 
-        ArrayList<String> studentData = Helper.studentToStringArray(s);
-
-        return studentData;
+        return Helper.studentToStringArray(s);
         
     }
 
     public ArrayList<String> searchByID(int id) {
         Student s = repository.getStudentByID(id);
 
-        ArrayList<String> studentData = Helper.studentToStringArray(s);
-
-        return studentData;
+        return Helper.studentToStringArray(s);
     }
 
     // What the fuck is this??
@@ -84,8 +80,8 @@ public class StudentService {
         ArrayList<Student> students = repository.getStudents();
         students = Helper.sortAlphabetically(students);
 
-        for (int i = 0; i < students.size(); i++) {
-            studentsData.add(Helper.studentToStringArray(students.get(i)));
+        for (Student s : students) {
+            studentsData.add(Helper.studentToStringArray(s));
         }
 
         return studentsData;
@@ -97,8 +93,8 @@ public class StudentService {
         ArrayList<Student> students = repository.getStudents();
         students =  Helper.sortByAverageGrade(students);
 
-        for (int i = 0; i < students.size(); i++) {
-            studentsData.add(Helper.studentToStringArray(students.get(i)));
+        for (Student s : students) {
+            studentsData.add(Helper.studentToStringArray(s));
         }
 
         return studentsData;
@@ -121,6 +117,16 @@ public class StudentService {
 
     public boolean loadRepo() {
         return repository.loadStudentsFromCSV();
+    }
+
+    public boolean existStudent(int id) {
+        for (Student s : repository.getStudents()) {
+            if (s.getId() == id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
