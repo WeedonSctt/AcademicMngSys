@@ -583,6 +583,12 @@ public class Main {
         }
     }
 
+    public static void manageError(Enum.Error error) {
+        if (error != null) {
+            System.out.println("Error>> " + error);
+        }
+    }
+
 }
 
 // FOR COMPILING> javac -d target -sourcepath src src/org/institution/app/Main.java
