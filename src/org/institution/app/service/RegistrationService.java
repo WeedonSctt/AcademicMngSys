@@ -71,22 +71,26 @@ public class RegistrationService {
         repository.removeRegistrationsIndexes(indexes);
     }
 
-    public ArrayList<ArrayList<String>> getEnrolledCourses(int courseID) {
+    public ArrayList<ArrayList<String>> getEnrolledStudentsInCourse(int courseID) {
+        if (!courseService.existCourse(courseID)) {
+            return null;
+        }
+
         ArrayList<Registration> registrations = repository.getRegistrations();
-        ArrayList<Course> coursesEnrolled = new ArrayList<>();
-        ArrayList<ArrayList<String>> coursesData = new ArrayList<>();
+        ArrayList<Registration> registrationsAtCourse = new ArrayList<>();
+        ArrayList<ArrayList<String>> studentsData = new ArrayList<>();
 
         for (Registration r : registrations) {
             if (r.getCourseId() == courseID) {
-                coursesEnrolled.add(courseService.getCourseByID(r.getCourseId()));
+                registrationsAtCourse.add(r);
             }
         }
 
-        for (Course c : coursesEnrolled) {
-            coursesData.add(Helper.courseToStringArray(c));
+        for (Registration r : registrationsAtCourse) {
+            studentsData.add(Helper.studentToStringArray(studentService.getStudentByID(r.getStudentId())));
         }
 
-        return coursesData;
+        return studentsData;
 
     }    
 
@@ -164,6 +168,10 @@ public class RegistrationService {
     }
 
     public int getCourseRemainingQuota(int courseID) {
+        if (!courseService.existCourse(courseID)) {
+            return -1;
+        }
+
         ArrayList<Registration> registrations = repository.getRegistrations();
 
         int enrolled = 0;

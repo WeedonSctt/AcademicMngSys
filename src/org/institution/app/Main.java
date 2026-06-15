@@ -345,15 +345,26 @@ public class Main {
 
                 int id = inputHelper.inputInteger(sc, "ID of course to delete> ");
 
-                courseService.removeCourse(id);
+                if (!courseService.removeCourse(id)) {
+                    System.out.println("Error: Course dont exist");
+                }
 
                 break;
             }
             case 4: {
-                // showTeachers();
-                // showCourses();
+                showTeachers(teacherService.getTeachers());
 
-                // Working on it...
+                int teacherID = inputHelper.inputInteger(sc, "ID of teacher to assign course> ");
+
+                showCourses(courseService.getCourses());
+
+                int courseID = inputHelper.inputInteger(sc, "ID of course to assign teacher> ");
+
+                if (courseService.assignTeacher(courseID, teacherID) != null) {
+                    System.out.println("Error: Wrong input data");
+                } else {
+                    System.out.println("Success");
+                }
 
                 break;
             }
@@ -364,18 +375,31 @@ public class Main {
             case 6: {
                 showCourses(courseService.getCourses());
 
-                // int id = inputHelper.inputInteger(sc, "ID from which course to show students> ");
+                int courseID = inputHelper.inputInteger(sc, "ID from which course to show students> ");
 
-                // showStudentsInCourse(id);
+                ArrayList<ArrayList<String>> students = registrationService.getEnrolledStudentsInCourse(courseID);
+
+                if (students != null) {
+                    showStudents(students);
+                } else {
+                    System.out.println("Error: Null");
+                }
 
                 break;
             }
             case 7: {
                 showCourses(courseService.getCourses());
 
-                int id = inputHelper.inputInteger(sc, "ID of course to show remaining quota> ");
+                int courseID = inputHelper.inputInteger(sc, "ID of course to show remaining quota> ");
 
-                System.out.println(registrationService.getCourseRemainingQuota(id));
+                int remain = registrationService.getCourseRemainingQuota(courseID);
+
+                if (remain != -1){
+                    System.out.println(remain);
+                } else {
+                    System.out.println("Error: no course");
+                }
+
             }
             case 8: {
                 break;
@@ -433,7 +457,7 @@ public class Main {
                 showCourses(courseService.getCourses());
                 int courseID = inputHelper.inputInteger(sc, "from which course you want to set grade");
 
-                showStudents(registrationService.getEnrolledCourses(courseID));
+                showStudents(registrationService.getEnrolledStudentsInCourse(courseID));
                 int studentID = inputHelper.inputInteger(sc, "id of student to grade");
 
                 // Missing validation? in service

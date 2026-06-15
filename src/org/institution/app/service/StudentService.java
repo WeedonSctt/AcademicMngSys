@@ -129,4 +129,16 @@ public class StudentService {
         return false;
     }
 
+    public Student getStudentByID(int id) {
+        ArrayList<Student> students = repository.getStudents();
+
+        for (Student s: students) {
+            if (s.getId() == id) {
+                return s;
+            }
+        }
+
+        return null;
+    }
+
 }
