@@ -37,8 +37,14 @@ public class TeacherService {
         return null;
     }
 
-    public boolean removeTeacher(int id) {
-        return (repository.removeTeacher(id));
+    public Enum.Error removeTeacher(int id) {
+        if (!existTeacher(id)) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
+
+        repository.removeTeacher(id);
+
+        return null;
     }
 
     public ArrayList<String> searchTeacherByID(int id) {

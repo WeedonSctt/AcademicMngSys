@@ -80,16 +80,14 @@ public class CourseService {
         return null;
     }
 
-    public boolean removeCourse(int courseID) {
-        Course c = repository.getCourseByID(courseID);
-        
-        if (c == null) {
-            return false;
+    public Enum.Error removeCourse(int courseID) {
+        if (!existCourse(courseID)) {
+            return Enum.Error.WRONG_INPUT_DATA;
         }
 
-        repository.removeCourse(c);
+        repository.removeCourse(repository.getCourseByID(courseID));
 
-        return true;
+        return null;
     }
 
     public ArrayList<ArrayList<String>> getCourses() {
