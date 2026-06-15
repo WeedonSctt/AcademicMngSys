@@ -1,9 +1,6 @@
 package org.institution.app.service;
 
-// JAVA LIBS
 import java.util.ArrayList;
-
-// PROJ PACKAGES
 import org.institution.app.util.*;
 import org.institution.app.util.Enum;
 import org.institution.app.repository.StudentRepository;
