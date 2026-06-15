@@ -1,10 +1,7 @@
 package org.institution.app.repository;
 
 import java.io.IOException;
-// JAVA LIBS
 import java.util.ArrayList;
-
-// PROJ PACKAGES
 import org.institution.app.model.Registration;
 import org.institution.app.util.FileManager;
 import org.institution.app.util.Helper;

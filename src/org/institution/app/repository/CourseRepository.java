@@ -1,12 +1,8 @@
 package org.institution.app.repository;
 
-// JAVA LIBS
 import java.io.IOException;
 import java.util.ArrayList;
-
-// PROJ PACKAGES
 import org.institution.app.model.Course;
-import org.institution.app.model.Teacher;
 import org.institution.app.util.FileManager;
 import org.institution.app.util.Helper;
 

@@ -1,10 +1,7 @@
 package org.institution.app.util;
 
-// JAVA LIBS
 import java.util.ArrayList;
 import java.util.Comparator;
-
-// PROJ PACKAGES
 import org.institution.app.model.*;
 
 public class Helper {

@@ -1,6 +1,5 @@
 package org.institution.app.util;
 
-// JAVA LIBS
 import java.util.Scanner;
 
 public class InputHelper {

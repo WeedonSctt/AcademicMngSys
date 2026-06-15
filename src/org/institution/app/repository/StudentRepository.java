@@ -1,14 +1,9 @@
 package org.institution.app.repository;
 
 import java.io.IOException;
-// JAVA LIBS
 import java.util.ArrayList;
-// import java.util.Scanner;
-
-// PROJ PACKAGES
 import org.institution.app.model.Student;
 import org.institution.app.util.FileManager;
-// import org.institution.app.util.Enum;
 import org.institution.app.util.Helper;
 
 public class StudentRepository {
@@ -18,14 +13,12 @@ public class StudentRepository {
     private int lastID;
 
     public StudentRepository() {
-        // Missing to check last if from data saved
         this.lastID = 0;
     }
 
     public void newStudent(int id, String name, int age, String email) {
         students.add(new Student(id, name, age, email));
         this.lastID += 1;
-        return;
     }
 
     public Student getStudentByName(String name) {
@@ -54,8 +47,6 @@ public class StudentRepository {
         Student s = getStudentByID(id);
         
         students.remove(s);
-        
-        return;
     }
 
     public boolean saveStudentsToCSV() {

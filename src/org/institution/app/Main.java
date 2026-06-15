@@ -1,10 +1,7 @@
 package org.institution.app;
 
-// JAVA LIBS
 import java.util.Scanner;
 import java.util.ArrayList;
-
-// PROJECT PACKAGE
 import org.institution.app.repository.*;
 import org.institution.app.service.*;
 import org.institution.app.util.Enum;
@@ -291,12 +288,7 @@ public class Main {
                 break;
             }
             default: {
-                // Maybe default could return to same menu?
                 System.out.println("Invalid Option!");
-
-                // Just to test?
-                // teachersMenu(sc, inputHelper, studentService);
-
                 break;
             }
         }
@@ -474,6 +466,7 @@ public class Main {
                 break;
         }
     }
+
     public static void reportsMenu() {}
 
     public static void showStudent(ArrayList<String> studentData) {
@@ -504,7 +497,6 @@ public class Main {
         );
     }    
     public static void showCourse(ArrayList<String> courseData) {
-        // A better print design should be set
         System.out.println(
             courseData.get(0) + "  |  " +
             courseData.get(1) + "  |  " +

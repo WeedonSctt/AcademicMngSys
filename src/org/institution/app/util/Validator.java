@@ -1,12 +1,7 @@
 package org.institution.app.util;
 
-// PROJ PACKAGES
-import org.institution.app.service.*;
-
 public class Validator {
     public static boolean emailHasExtension(String e) {
-        // MISSING TO CHECK IF IT HAS 'gmail/outlook/whatever'
-        
         char[] characters = e.toCharArray();
         
         int index = 0;

@@ -1,15 +1,11 @@
 package org.institution.app.util;
 
-// JAVA LIBS
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
-
-// PROJ PACKAGES
-// import org.institution.app.model.*;
 
 public class FileManager {
     
@@ -18,8 +14,6 @@ public class FileManager {
 
     public Enum.Error writeToFile(String path, ArrayList<ArrayList<String>> array) throws IOException {
         File f = new File("data/csv/" + path);
-
-        // Use Helper to confirm file exists before using this method
 
         if (!f.exists()) {
             f.createNewFile();
@@ -46,8 +40,6 @@ public class FileManager {
         Scanner reader = new Scanner(f);
         ArrayList<ArrayList<String>> array = new ArrayList<>();
 
-        // Use Helper to confirm file exists before using this method
-
         if (!f.exists()) {
             reader.close();
             return null;
@@ -66,7 +58,6 @@ public class FileManager {
                     string = "";
                 }
             }
-            // add last token
             str.add(string);
             array.add(str);
         }
