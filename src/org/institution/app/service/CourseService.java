@@ -42,6 +42,12 @@ public class CourseService {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
+        for (Course c : repository.getCourses()) {
+            if (c.getName().equals(name)) {
+                return Enum.Error.ALREADY_CREATED;
+            }
+        }
+
         repository.newCourse(repository.getLastID() + 1, name, description, maximumStudents, teacherID);
         
         return null;
@@ -62,8 +68,6 @@ public class CourseService {
     }
 
     public Enum.Error assignTeacher(int courseID, int teacherID) {
-        Course c = repository.getCourseByID(courseID);
-
         if (!existCourse(courseID)) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
@@ -72,6 +76,7 @@ public class CourseService {
             return Enum.Error.TEACHER_NOT_FOUND;
         }
 
+        Course c = repository.getCourseByID(courseID);
         c.setTeacherId(teacherID);
 
         return null;

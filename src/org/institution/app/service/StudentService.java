@@ -13,12 +13,17 @@ public class StudentService {
         this.repository = repo;
     }
 
-    // ENUM.ERROR PROVISIONAL
     public Enum.Error newStudent(String name, int age, String email) {
         if (!Validator.studentInputData(age, email)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.INVALID_INPUT_DATA;
         }
-        // Maybe check if there's another student with same metadata?
+
+        for (Student s : repository.getStudents()) {
+            if (s.getEmail().equals(email)) {
+                return Enum.Error.ALREADY_CREATED;
+            }
+        }
+
         repository.newStudent(repository.getLastID() + 1, name, age, email);
 
         return null;
@@ -31,9 +36,18 @@ public class StudentService {
         
         Student s = repository.getStudentByID(id);
 
-        s.setName(name);
-        s.setAge(age);
-        s.setEmail(email);
+        if (name != null) {
+            s.setName(name);
+        }
+
+        if (age != -1) {
+            s.setAge(age);
+        }
+
+        if (email != null) {
+            s.setEmail(email);
+        }
+
         s.setIsActive(isActive);
 
         return null;

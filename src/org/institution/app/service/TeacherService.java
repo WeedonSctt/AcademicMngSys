@@ -18,6 +18,12 @@ public class TeacherService {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
+        for (Teacher t : repository.getTeachers()) {
+            if (t.getEmail().equals(email)) {
+                return Enum.Error.ALREADY_CREATED;
+            }
+        }
+
         repository.newTeacher(repository.getLastID() + 1, name, department, email);
 
         return null;
@@ -28,12 +34,21 @@ public class TeacherService {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
+
         Teacher t = repository.getTeacherByID(id);
 
-        t.setName(name);
-        t.setDepartment(department);
-        t.setEmail(email);
-        
+        if (email != null) {
+            t.setEmail(email);
+        }
+
+        if (name != null) {
+            t.setName(name);
+        }
+
+        if (department != null) {
+            t.setDepartment(department);
+        }
+
         return null;
     }
 

@@ -5,14 +5,22 @@ import java.util.Scanner;
 public class InputHelper {
     public InputHelper() {}
 
-    public int inputInteger(Scanner sc, String placeholder) {
+    public int inputInteger(Scanner sc, String placeholder, boolean skippable) {
         while (true) {
+            if (skippable) {
+                System.out.print("[SKIPPABLE] ");
+            }
+
             System.out.print(placeholder);
 
             String line = sc.nextLine();
 
             if (line.isBlank()) {
-                System.out.println("Error: INVALID FORMAT");
+                if (skippable) {
+                    return -1;
+                } else {
+                    System.out.println("Error: INVALID FORMAT");
+                }
                 continue;
             }
 
@@ -42,15 +50,21 @@ public class InputHelper {
         }
     }
 
-    public String inputString(Scanner sc, String placeholder) {
+    public String inputString(Scanner sc, String placeholder, boolean skippable) {
         while (true) {
+            if (skippable) {
+                System.out.print("[SKIPPABLE] ");
+            }
             System.out.print(placeholder);
 
             String line = sc.nextLine();
 
             if (line.isBlank()) {
-                System.out.println("ERROR: INVALID FORMAT");
-                continue;
+                if (skippable) {
+                    return null;
+                } else {
+                    System.out.println("ERROR: INVALID FORMAT");
+                }
             } else if (!Character.isLetter(line.charAt(0))) {
                 System.out.println("ERROR: MAY BEGIN WITH A LETTER");
             } else {

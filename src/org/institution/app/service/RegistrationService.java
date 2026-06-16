@@ -24,6 +24,10 @@ public class RegistrationService {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
+        if (!studentService.getStudentByID(studentID).isActive()) {
+            return Enum.Error.INACTIVE_STUDENT;
+        }
+
         Course c = courseService.getCourseByID(courseID);
 
         if (c.getTeacherId() == -1) {
@@ -52,29 +56,35 @@ public class RegistrationService {
     }
 
     public Enum.Error grade(int studentID, int courseID, double grade) {
-        Registration reg = repository.getRegistration(studentID, courseID);
-
-        if (reg == null) {
-            return Enum.Error.WRONG_INPUT_DATA;
+        if (!teacherService.existTeacher(courseService.getCourseByID(courseID).getTeacherId())) {
+            return Enum.Error.TEACHER_NOT_FOUND;
         }
 
         if (grade < 0.0 || grade > 10.0) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
+        Registration reg = repository.getRegistration(studentID, courseID);
+
+        if (reg == null) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
+
         reg.setGrade(grade);
-        ArrayList<Double> grades = repository.getStudentGrades(studentID);
-        setAverageGrade(studentID, grades);
+        setAverageGrade(studentID, repository.getStudentGrades(studentID));
 
         return null;
     }
 
-    public void removeStudentRegistrations(int studentID) {
-        ArrayList<Registration> registrations = repository.getRegistrations();
+    public Enum.Error removeStudentRegistrations(int studentID) {
+        if (!studentService.existStudent(studentID)) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
+
         ArrayList<Integer> indexes = new ArrayList<>();
 
         int index = 0;
-        for (Registration r : registrations) {
+        for (Registration r : repository.getRegistrations()) {
             if (r.getStudentId() == studentID) {
                 indexes.add(index);
             }
@@ -83,6 +93,36 @@ public class RegistrationService {
         }
 
         repository.removeRegistrationsIndexes(indexes);
+
+        return null;
+    }
+
+    public Enum.Error removeCourseRegistrations(int courseID) {
+        if (!courseService.existCourse(courseID)) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
+
+        ArrayList<Integer> indexes = new ArrayList<>();
+        ArrayList<Integer> studentIDs = new ArrayList<>();
+
+        int index = 0;
+        for (Registration r : repository.getRegistrations()) {
+            if (r.getCourseId() == courseID) {
+                indexes.add(index);
+                studentIDs.add(r.getStudentId());
+            }
+
+            index ++;
+        }
+
+        repository.removeRegistrationsIndexes(indexes);
+
+        // update students avg grade
+        for (int i : indexes) {
+            setAverageGrade(i, repository.getStudentGrades(i));
+        }
+
+        return null;
     }
 
     public ArrayList<ArrayList<String>> getEnrolledStudentsInCourse(int courseID) {
@@ -90,11 +130,10 @@ public class RegistrationService {
             return null;
         }
 
-        ArrayList<Registration> registrations = repository.getRegistrations();
         ArrayList<Registration> registrationsAtCourse = new ArrayList<>();
         ArrayList<ArrayList<String>> studentsData = new ArrayList<>();
 
-        for (Registration r : registrations) {
+        for (Registration r : repository.getRegistrations()) {
             if (r.getCourseId() == courseID) {
                 registrationsAtCourse.add(r);
             }
@@ -124,6 +163,10 @@ public class RegistrationService {
     }
 
     public ArrayList<ArrayList<String>> getAcademicHistory(int studentID) {
+        if (!studentService.existStudent(studentID)) {
+            return null;
+        }
+
         ArrayList<Registration> registrations = repository.getRegistrations();
         ArrayList<ArrayList<String>> academicHistory = new ArrayList<>();
 
@@ -138,7 +181,11 @@ public class RegistrationService {
 
                 int teacherID = c.getTeacherId();
 
-                resume.add(teacherService.getTeacherByID(teacherID).getName());
+                if (teacherService.existTeacher(teacherID)) {
+                    resume.add(teacherService.getTeacherByID(teacherID).getName());
+                } else {
+                    resume.add("NO_TEACHER");
+                }
 
                 double grade = r.getGrade();
 

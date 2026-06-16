@@ -29,7 +29,11 @@ public class Validator {
     }
 
     public static boolean studentInputData(int age, String email) {
-        if (age < 18 || !emailHasExtension(email)) {
+        if (email != null && !emailHasExtension(email)) {
+            return false;
+        }
+
+        if (age < 18 && age != -1) {
             return false;
         }
 
@@ -37,7 +41,7 @@ public class Validator {
     }
 
     public static boolean teacherInputData(String email) {
-        if (!emailHasExtension(email)) {
+        if (email != null && !emailHasExtension(email)) {
             return false;
         }
 

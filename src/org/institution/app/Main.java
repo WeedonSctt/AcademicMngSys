@@ -52,7 +52,7 @@ public class Main {
             System.out.println("7. Exit");
             
             // "$>" is the placeholder to show
-            int option = inputHelper.inputInteger(sc, "> ");
+            int option = inputHelper.inputInteger(sc, "> ", false);
 
             switch (option) {
                 case 1:
@@ -101,13 +101,13 @@ public class Main {
         System.out.println("8. List Alphabetically");
         System.out.println("9. Back");
 
-        int option = inputHelper.inputInteger(sc, "> ");
+        int option = inputHelper.inputInteger(sc, "> ", false);
 
         switch (option) {
             case 1: {
-                String name = inputHelper.inputString(sc, "Student's name> ");
-                int age = inputHelper.inputInteger(sc, "Student's age> ");
-                String email = inputHelper.inputString(sc, "Student's email> ");
+                String name = inputHelper.inputString(sc, "Student's name> ", false);
+                int age = inputHelper.inputInteger(sc, "Student's age> ", false);
+                String email = inputHelper.inputString(sc, "Student's email> ", false);
 
                 manageError(studentService.newStudent(name, age, email));
 
@@ -115,12 +115,11 @@ public class Main {
             }
             case 2: {
                 showStudents(studentService.getStudents());
-                
-                int id = inputHelper.inputInteger(sc, "Student's id to edit> ");
+                int id = inputHelper.inputInteger(sc, "Student's id to edit> ", false);
 
-                String name = inputHelper.inputString(sc, "Student's name> ");
-                int age = inputHelper.inputInteger(sc, "Student's age> ");
-                String email = inputHelper.inputString(sc, "Student's email> ");
+                String name = inputHelper.inputString(sc, "Student's name> ", true);
+                int age = inputHelper.inputInteger(sc, "Student's age> ", true);
+                String email = inputHelper.inputString(sc, "Student's email> ", true);
                 boolean isActive = inputHelper.inputBoolean(sc, "Active user? [y/n]> ");
             
                 manageError(studentService.editStudentData(id, name, age, email, isActive));
@@ -129,16 +128,16 @@ public class Main {
             }
             case 3: {
                 showStudents(studentService.getStudents());
+                int id = inputHelper.inputInteger(sc, "Student's id to delete> ", false);
 
-                int id = inputHelper.inputInteger(sc, "Student's id to delete> ");
-
-                manageError(studentService.deleteStudent(id));
+                if (manageError(studentService.deleteStudent(id))) {
+                    manageError(registrationService.removeStudentRegistrations(id));
+                }
 
                 break;
-
             }
             case 4: {
-                String name = inputHelper.inputString(sc, "Name of student to search> ");
+                String name = inputHelper.inputString(sc, "Name of student to search> ", false);
 
                 ArrayList<String> student = studentService.searchByName(name);
 
@@ -152,7 +151,7 @@ public class Main {
                 break;
             }
             case 5: {
-                int id = inputHelper.inputInteger(sc, "ID of student to search> ");
+                int id = inputHelper.inputInteger(sc, "ID of student to search> ", false);
 
                 ArrayList<String> student = studentService.searchByID(id);
 
@@ -204,13 +203,13 @@ public class Main {
         System.out.println("7. Show Assigned Courses");
         System.out.println("8. Back");
 
-        int option = inputHelper.inputInteger(sc, "> ");
+        int option = inputHelper.inputInteger(sc, "> ", false);
 
         switch (option) {
             case 1: {
-                String name = inputHelper.inputString(sc, "Teacher's name> ");
-                String department = inputHelper.inputString(sc, "Teacher's department> ");
-                String email = inputHelper.inputString(sc, "Teacher's email> ");
+                String name = inputHelper.inputString(sc, "Teacher's name> ", false);
+                String department = inputHelper.inputString(sc, "Teacher's department> ", false);
+                String email = inputHelper.inputString(sc, "Teacher's email> ", false);
 
                 manageError(teacherService.newTeacher(name, department, email));
 
@@ -218,12 +217,11 @@ public class Main {
             }
             case 2: {
                 showTeachers(teacherService.getTeachers());
+                int id = inputHelper.inputInteger(sc, "Teacher's id to edit> ", false);
 
-                int id = inputHelper.inputInteger(sc, "Teacher's id to edit> ");
-
-                String name = inputHelper.inputString(sc, "Teacher's name> ");
-                String department = inputHelper.inputString(sc, "Teacher's department> ");
-                String email = inputHelper.inputString(sc, "Teacher's email> ");
+                String name = inputHelper.inputString(sc, "Teacher's name> ", true);
+                String department = inputHelper.inputString(sc, "Teacher's department> ", true);
+                String email = inputHelper.inputString(sc, "Teacher's email> ", true);
 
                 manageError(teacherService.editTeacherData(id, name, department, email));
 
@@ -231,15 +229,14 @@ public class Main {
             }
             case 3: {
                 showTeachers(teacherService.getTeachers());
-
-                int id = inputHelper.inputInteger(sc, "ID from teacher to delete> ");
+                int id = inputHelper.inputInteger(sc, "ID from teacher to delete> ", false);
 
                 manageError(teacherService.removeTeacher(id));
 
                 break;
             }
             case 4: {
-                String name = inputHelper.inputString(sc, "Teacher's name to search> ");
+                String name = inputHelper.inputString(sc, "Teacher's name to search> ", false);
 
                 ArrayList<String> teacher = teacherService.searchTeacherByName(name);
 
@@ -253,7 +250,7 @@ public class Main {
                 break;
             }
             case 5: {
-                int id = inputHelper.inputInteger(sc, "Teacher's ID to search> ");
+                int id = inputHelper.inputInteger(sc, "Teacher's ID to search> ", false);
 
                 ArrayList<String> teacher = teacherService.searchTeacherByID(id);
 
@@ -272,8 +269,7 @@ public class Main {
             }
             case 7: {
                 showTeachers(teacherService.getTeachers());
-
-                int id = inputHelper.inputInteger(sc, "ID of teacher to show assigned courses> ");
+                int id = inputHelper.inputInteger(sc, "ID of teacher to show assigned courses> ", false);
 
                 if (!teacherService.existTeacher(id)) {
                     System.out.println("Error: TEACHER DOES NOT EXIST");
@@ -310,13 +306,13 @@ public class Main {
         System.out.println("7. Show Remaining Quote");
         System.out.println("8. Back");
 
-        int option = inputHelper.inputInteger(sc, "> ");
+        int option = inputHelper.inputInteger(sc, "> ", false);
 
         switch (option) {
             case 1: {
-                String name = inputHelper.inputString(sc, "Course's name> ");
-                String description = inputHelper.inputString(sc, "Course's description> ");
-                int maximumStudents = inputHelper.inputInteger(sc, "Course's maximum quota> ");
+                String name = inputHelper.inputString(sc, "Course's name> ", false);
+                String description = inputHelper.inputString(sc, "Course's description> ", false);
+                int maximumStudents = inputHelper.inputInteger(sc, "Course's maximum quota> ", false);
 
                 manageError(courseService.newCourse(name, description, maximumStudents, -1));
 
@@ -324,11 +320,11 @@ public class Main {
             }
             case 2: {
                 showCourses(courseService.getCourses());
-                int id = inputHelper.inputInteger(sc, "ID of course to edit> ");
+                int id = inputHelper.inputInteger(sc, "ID of course to edit> ", false);
 
-                String name = inputHelper.inputString(sc, "New course's name> ");
-                String description = inputHelper.inputString(sc, "New course's description> ");
-                int maximumStudents = inputHelper.inputInteger(sc, "New course's maximum quota> ");
+                String name = inputHelper.inputString(sc, "New course's name> ", true);
+                String description = inputHelper.inputString(sc, "New course's description> ", true);
+                int maximumStudents = inputHelper.inputInteger(sc, "New course's maximum quota> ", true);
 
                 manageError(courseService.editCourse(id, name, description, maximumStudents));
 
@@ -336,18 +332,20 @@ public class Main {
             }
             case 3: {
                 showCourses(courseService.getCourses());
-                int id = inputHelper.inputInteger(sc, "ID of course to delete> ");
+                int id = inputHelper.inputInteger(sc, "ID of course to delete> ", false);
 
-                manageError(courseService.removeCourse(id));
+                if (manageError(registrationService.removeCourseRegistrations(id))) {
+                    manageError(courseService.removeCourse(id));
+                }
 
                 break;
             }
             case 4: {
                 showTeachers(teacherService.getTeachers());
-                int teacherID = inputHelper.inputInteger(sc, "ID of teacher to assign course> ");
+                int teacherID = inputHelper.inputInteger(sc, "ID of teacher to assign course> ", false);
 
                 showCourses(courseService.getCourses());
-                int courseID = inputHelper.inputInteger(sc, "ID of course to assign teacher> ");
+                int courseID = inputHelper.inputInteger(sc, "ID of course to assign teacher> ", false);
 
                 manageError(courseService.assignTeacher(courseID, teacherID));
 
@@ -359,7 +357,7 @@ public class Main {
             }
             case 6: {
                 showCourses(courseService.getCourses());
-                int courseID = inputHelper.inputInteger(sc, "ID from which course to show students> ");
+                int courseID = inputHelper.inputInteger(sc, "ID from which course to show students> ", false);
 
                 ArrayList<ArrayList<String>> students = registrationService.getEnrolledStudentsInCourse(courseID);
 
@@ -374,7 +372,7 @@ public class Main {
             }
             case 7: {
                 showCourses(courseService.getCourses());
-                int courseID = inputHelper.inputInteger(sc, "ID of course to show remaining quota> ");
+                int courseID = inputHelper.inputInteger(sc, "ID of course to show remaining quota> ", false);
 
                 int remain = registrationService.getCourseRemainingQuota(courseID);
 
@@ -407,15 +405,15 @@ public class Main {
         System.out.println("4. Show Academic History");
         System.out.println("5. Back");
 
-        int option = inputHelper.inputInteger(sc, "> ");
+        int option = inputHelper.inputInteger(sc, "> ", false);
 
         switch (option) {
             case 1: {
                 showStudents(studentService.getStudents());
-                int studentID = inputHelper.inputInteger(sc, "ID of student to register> ");
+                int studentID = inputHelper.inputInteger(sc, "ID of student to register> ", false);
 
                 showCourses(courseService.getCourses());
-                int courseID = inputHelper.inputInteger(sc, "ID of course to register");
+                int courseID = inputHelper.inputInteger(sc, "ID of course to register", false);
 
                 manageError(registrationService.newRegistration(studentID, courseID));
 
@@ -423,10 +421,10 @@ public class Main {
             }
             case 2: {
                 showStudents(studentService.getStudents());
-                int studentID = inputHelper.inputInteger(sc, "Student who cancels registration> ");
+                int studentID = inputHelper.inputInteger(sc, "Student who cancels registration> ", false);
 
                 showCourses(registrationService.getCoursesEnrolledByStudent(studentID));
-                int courseID = inputHelper.inputInteger(sc, "from which course you want to cancel registration> ");
+                int courseID = inputHelper.inputInteger(sc, "from which course you want to cancel registration> ", false);
 
                 manageError(registrationService.cancelRegistration(studentID, courseID));
 
@@ -434,10 +432,10 @@ public class Main {
             }
             case 3: {
                 showCourses(courseService.getCourses());
-                int courseID = inputHelper.inputInteger(sc, "from which course you want to set grade");
+                int courseID = inputHelper.inputInteger(sc, "from which course you want to set grade", false);
 
                 showStudents(registrationService.getEnrolledStudentsInCourse(courseID));
-                int studentID = inputHelper.inputInteger(sc, "id of student to grade");
+                int studentID = inputHelper.inputInteger(sc, "id of student to grade", false);
 
                 double grade = inputHelper.inputDouble(sc, "grade> ");
 
@@ -447,14 +445,16 @@ public class Main {
             }
             case 4: {
                 showStudents(studentService.getStudents());
-                int studentID = inputHelper.inputInteger(sc, "id of student to show academic history");
+                int studentID = inputHelper.inputInteger(sc, "id of student to show academic history", false);
 
-                if (!studentService.existStudent(studentID)) {
-                    System.out.println("Error: Student dont exists");
+                ArrayList<ArrayList<String>> academicHistory = registrationService.getAcademicHistory(studentID);
+
+                if (academicHistory == null) {
+                    System.out.println("Error: no student");
                     break;
                 }
 
-                showAcademicHistory(studentID);
+                showAcademicHistory(academicHistory, studentID);
 
                 break;
             }
@@ -522,15 +522,13 @@ public class Main {
         }
     }
 
-    public static void showAcademicHistory(int studentID) {
+    public static void showAcademicHistory(ArrayList<ArrayList<String>> academicHistory, int studentID) {
         System.out.print("\n                       A C A D E M I C   H I S T O R Y\n\n");
 
         System.out.println("<Student>");
         showStudent(studentService.searchByID(studentID));
 
         System.out.println("\n<Registered in>");
-        
-        ArrayList<ArrayList<String>> academicHistory = registrationService.getAcademicHistory(studentID);
 
         for (ArrayList<String> resume : academicHistory) {
             System.out.println("Course's name: " + resume.get(0));
@@ -556,10 +554,13 @@ public class Main {
         }
     }
 
-    public static void manageError(Enum.Error error) {
+    public static boolean manageError(Enum.Error error) {
         if (error != null) {
             System.out.println("Error>> " + error);
+            return false;
         }
+
+        return true;
     }
 
 }
