@@ -17,17 +17,16 @@ public class CourseService {
 
     public ArrayList<ArrayList<String>> getAssignedCourses(int teacherID) {
         ArrayList<Course> courses = repository.getCourses();
-        ArrayList<Course> assignedCourses = new ArrayList<>();
         ArrayList<ArrayList<String>> assignedCoursesData = new ArrayList<>();
 
         for (Course c : courses) {
             if (c.getTeacherId() == teacherID) {
-                assignedCourses.add(c);
-            }
-        }
+                ArrayList<String> course = Helper.courseToStringArray(c);
 
-        for (Course c : assignedCourses) {
-            assignedCoursesData.add(Helper.courseToStringArray(c));
+                course = replaceTeacherIDWithName(course, c);
+
+                assignedCoursesData.add(course);
+            }
         }
 
         return assignedCoursesData;
@@ -97,7 +96,11 @@ public class CourseService {
         ArrayList<Course> courses = repository.getCourses();
 
         for (Course c : courses) {
-            coursesData.add(Helper.courseToStringArray(c));
+            ArrayList<String> course = Helper.courseToStringArray(c);
+
+            course = replaceTeacherIDWithName(course, c);
+
+            coursesData.add(course);
         }
 
         return coursesData;
@@ -134,11 +137,28 @@ public class CourseService {
     }
 
     public ArrayList<String> searchCourseByName(String name) {
-        return Helper.courseToStringArray(repository.getCourseByName(name));
+        Course c = repository.getCourseByName(name);
+        ArrayList<String> course = Helper.courseToStringArray(c);
+
+        course = replaceTeacherIDWithName(course, c);
+
+        return course;
     }
 
     public ArrayList<String> searchCourseByID(int id) {
-        return Helper.courseToStringArray(repository.getCourseByID(id));
+        Course c = repository.getCourseByID(id);
+        ArrayList<String> course = Helper.courseToStringArray(c);
+
+        course = replaceTeacherIDWithName(course, c);
+
+        return course;
+    }
+
+    private ArrayList<String> replaceTeacherIDWithName(ArrayList<String> course, Course c) {
+        course.removeLast();
+        course.add(teacherService.getTeacherByID(c.getTeacherId()).getName());
+
+        return course;
     }
 
 }
