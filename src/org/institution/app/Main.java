@@ -69,6 +69,7 @@ public class Main {
                     break;
                 case 5:
                     reportsMenu();
+                    break;
                 case 6:
                     save();
                     break;
@@ -146,6 +147,7 @@ public class Main {
                     break;
                 }
 
+                showResume("STUDENT");
                 showStudent(student);
 
                 break;
@@ -160,6 +162,7 @@ public class Main {
                     break;
                 }
 
+                showResume("STUDENT");
                 showStudent(student);
 
                 break;
@@ -180,12 +183,14 @@ public class Main {
                 break;
             }
             case 9: {
-                break;
+                return;
             }
             default:
                 System.out.println("Invalid Option!");
-                break;
+                studentsMenu();
         }
+
+        pressToContinue();
     }
     
     public static void teachersMenu() {
@@ -245,6 +250,7 @@ public class Main {
                     break;
                 }
 
+                showResume("TEACHER");
                 showTeacher(teacher);
 
                 break;
@@ -259,6 +265,7 @@ public class Main {
                     break;
                 }
 
+                showResume("TEACHER");
                 showTeacher(teacher);
 
                 break;
@@ -281,13 +288,15 @@ public class Main {
                 break;
             }
             case 8: {
-                break;
+                return;
             }
             default: {
                 System.out.println("Invalid Option!");
-                break;
+                teachersMenu();
             }
         }
+
+        pressToContinue();
     }
 
     public static void coursesMenu() {
@@ -384,12 +393,14 @@ public class Main {
 
             }
             case 8: {
-                break;
+                return;
             }
             default:
                 System.out.println("Invalid Option!");
-                break;
+                coursesMenu();
         }
+
+        pressToContinue();
     }
 
     public static void registrationsMenu() {
@@ -413,7 +424,7 @@ public class Main {
                 int studentID = inputHelper.inputInteger(sc, "ID of student to register> ", false);
 
                 showCourses(courseService.getCourses());
-                int courseID = inputHelper.inputInteger(sc, "ID of course to register", false);
+                int courseID = inputHelper.inputInteger(sc, "ID of course to register> ", false);
 
                 manageError(registrationService.newRegistration(studentID, courseID));
 
@@ -424,7 +435,7 @@ public class Main {
                 int studentID = inputHelper.inputInteger(sc, "Student who cancels registration> ", false);
 
                 showCourses(registrationService.getCoursesEnrolledByStudent(studentID));
-                int courseID = inputHelper.inputInteger(sc, "from which course you want to cancel registration> ", false);
+                int courseID = inputHelper.inputInteger(sc, "From which course you want to cancel registration> ", false);
 
                 manageError(registrationService.cancelRegistration(studentID, courseID));
 
@@ -432,12 +443,12 @@ public class Main {
             }
             case 3: {
                 showCourses(courseService.getCourses());
-                int courseID = inputHelper.inputInteger(sc, "from which course you want to set grade", false);
+                int courseID = inputHelper.inputInteger(sc, "From which course you want to set grade> ", false);
 
                 showStudents(registrationService.getEnrolledStudentsInCourse(courseID));
-                int studentID = inputHelper.inputInteger(sc, "id of student to grade", false);
+                int studentID = inputHelper.inputInteger(sc, "ID of student to grade> ", false);
 
-                double grade = inputHelper.inputDouble(sc, "grade> ");
+                double grade = inputHelper.inputDouble(sc, "Grade> ");
 
                 manageError(registrationService.grade(studentID, courseID, grade));
 
@@ -445,7 +456,7 @@ public class Main {
             }
             case 4: {
                 showStudents(studentService.getStudents());
-                int studentID = inputHelper.inputInteger(sc, "id of student to show academic history", false);
+                int studentID = inputHelper.inputInteger(sc, "ID of student to show academic history> ", false);
 
                 ArrayList<ArrayList<String>> academicHistory = registrationService.getAcademicHistory(studentID);
 
@@ -459,12 +470,14 @@ public class Main {
                 break;
             }
             case 5: {
-                break;
+                return;
             }
             default:
                 System.out.println("Invalid Option!");
-                break;
+                registrationsMenu();
         }
+
+        pressToContinue();
     }
 
     public static void reportsMenu() {}
@@ -481,7 +494,7 @@ public class Main {
         System.out.println(
             studentData.get(0) + "  |  " +
             studentData.get(1) + ", " +
-            studentData.get(2) + " YO  |  " +
+            studentData.get(2) + " years old  |  " +
             studentData.get(3) + "  |  " +
             studentData.get(4) + "  |  " +
             active + "  |"
@@ -507,16 +520,22 @@ public class Main {
     }
 
     public static void showStudents(ArrayList<ArrayList<String>> studentsData) {
+        showResume("STUDENT");
+
         for (ArrayList<String> student : studentsData) {
             showStudent(student);
         }
     }
     public static void showTeachers(ArrayList<ArrayList<String>> teachersData) {
+        showResume("TEACHER");
+
         for (ArrayList<String> array : teachersData) {
             showTeacher(array);
         }
     }
     public static void showCourses(ArrayList<ArrayList<String>> coursesData) {
+        showResume("COURSE");
+
         for (ArrayList<String> course : coursesData) {
             showCourse(course);
         }
@@ -526,6 +545,7 @@ public class Main {
         System.out.print("\n                       A C A D E M I C   H I S T O R Y\n\n");
 
         System.out.println("<Student>");
+        showResume("STUDENT");
         showStudent(studentService.searchByID(studentID));
 
         System.out.println("\n<Registered in>");
@@ -561,6 +581,27 @@ public class Main {
         }
 
         return true;
+    }
+
+    public static void showResume(String model) {
+        switch (model) {
+            case "STUDENT":
+                System.out.println("|  ID  |    NAME    |  AGE  |   E-MAIL   |  AVERAGE GRADE  |   STATE   |\n");
+                break;
+            case "TEACHER":
+                System.out.println("|  ID  |    NAME    |    DEPARTMENT    |   E-MAIL   |\n");
+                break;
+            case "COURSE":
+                System.out.println("|  ID  |    NAME    |       DESCRIPTION       |  MAX STUDENTS  |    TEACHER    |\n");
+                break;
+            default:
+                System.out.println("ERROR IN SHOW RESUME");
+        }
+    }
+
+    public static void pressToContinue() {
+        System.out.print("\n[PRESS <ENTER> TO CONTINUE]");
+        sc.nextLine();
     }
 
 }
