@@ -133,4 +133,12 @@ public class CourseService {
         return false;
     }
 
+    public ArrayList<String> searchCourseByName(String name) {
+        return Helper.courseToStringArray(repository.getCourseByName(name));
+    }
+
+    public ArrayList<String> searchCourseByID(int id) {
+        return Helper.courseToStringArray(repository.getCourseByID(id));
+    }
+
 }

@@ -38,6 +38,16 @@ public class CourseRepository {
         return null;
     }
 
+    public Course getCourseByName(String name) {
+        for (Course c : courses) {
+            if (c.getName().equals(name)) {
+                return c;
+            }
+        }
+
+        return null;
+    }
+
     public void removeCourse(Course c) {
         courses.remove(c);
     }
