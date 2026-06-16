@@ -72,6 +72,7 @@ public class Main {
                     break;
                 case 6:
                     save();
+                    pressToContinue();
                     break;
                 case 7:
                     flow = false;
@@ -79,6 +80,7 @@ public class Main {
                     break;
                 default:
                     System.out.println("Invalid Option!");
+                    pressToContinue();
                     break;
             }
         } while (flow);
@@ -110,7 +112,10 @@ public class Main {
                 int age = inputHelper.inputInteger(sc, "Student's age> ", false);
                 String email = inputHelper.inputString(sc, "Student's email> ", false);
 
-                manageError(studentService.newStudent(name, age, email));
+                if (manageError(studentService.newStudent(name, age, email))) {
+                    showResume("STUDENT");
+                    showStudent(studentService.searchByName(name));
+                }
 
                 break;
             }
@@ -123,7 +128,10 @@ public class Main {
                 String email = inputHelper.inputString(sc, "Student's email> ", true);
                 boolean isActive = inputHelper.inputBoolean(sc, "Active user? [y/n]> ");
             
-                manageError(studentService.editStudentData(id, name, age, email, isActive));
+                if (manageError(studentService.editStudentData(id, name, age, email, isActive))) {
+                    showResume("STUDENT");
+                    showStudent(studentService.searchByID(id));
+                }
 
                 break;
             }
@@ -187,6 +195,7 @@ public class Main {
             }
             default:
                 System.out.println("Invalid Option!");
+                pressToContinue();
                 studentsMenu();
         }
 
@@ -216,7 +225,10 @@ public class Main {
                 String department = inputHelper.inputString(sc, "Teacher's department> ", false);
                 String email = inputHelper.inputString(sc, "Teacher's email> ", false);
 
-                manageError(teacherService.newTeacher(name, department, email));
+                if (manageError(teacherService.newTeacher(name, department, email))) {
+                    showResume("TEACHER");
+                    showTeacher(teacherService.searchTeacherByName(name));
+                }
 
                 break;
             }
@@ -228,7 +240,10 @@ public class Main {
                 String department = inputHelper.inputString(sc, "Teacher's department> ", true);
                 String email = inputHelper.inputString(sc, "Teacher's email> ", true);
 
-                manageError(teacherService.editTeacherData(id, name, department, email));
+                if (manageError(teacherService.editTeacherData(id, name, department, email))) {
+                    showResume("TEACHER");
+                    showTeacher(teacherService.searchTeacherByID(id));
+                }
 
                 break;
             }
@@ -292,6 +307,7 @@ public class Main {
             }
             default: {
                 System.out.println("Invalid Option!");
+                pressToContinue();
                 teachersMenu();
             }
         }
@@ -323,7 +339,10 @@ public class Main {
                 String description = inputHelper.inputString(sc, "Course's description> ", false);
                 int maximumStudents = inputHelper.inputInteger(sc, "Course's maximum quota> ", false);
 
-                manageError(courseService.newCourse(name, description, maximumStudents, -1));
+                if (manageError(courseService.newCourse(name, description, maximumStudents, -1))) {
+                    showResume("COURSE");
+                    showCourse(courseService.searchCourseByName(name));
+                }
 
                 break;
             }
@@ -335,7 +354,10 @@ public class Main {
                 String description = inputHelper.inputString(sc, "New course's description> ", true);
                 int maximumStudents = inputHelper.inputInteger(sc, "New course's maximum quota> ", true);
 
-                manageError(courseService.editCourse(id, name, description, maximumStudents));
+                if (manageError(courseService.editCourse(id, name, description, maximumStudents))) {
+                    showResume("COURSE");
+                    showCourse(courseService.searchCourseByID(id));
+                }
 
                 break;
             }
@@ -350,11 +372,11 @@ public class Main {
                 break;
             }
             case 4: {
-                showTeachers(teacherService.getTeachers());
-                int teacherID = inputHelper.inputInteger(sc, "ID of teacher to assign course> ", false);
-
                 showCourses(courseService.getCourses());
                 int courseID = inputHelper.inputInteger(sc, "ID of course to assign teacher> ", false);
+
+                showTeachers(teacherService.getTeachers());
+                int teacherID = inputHelper.inputInteger(sc, "ID of teacher to assign course> ", false);
 
                 manageError(courseService.assignTeacher(courseID, teacherID));
 
@@ -391,12 +413,14 @@ public class Main {
                     System.out.println("Error: no course");
                 }
 
+                break;
             }
             case 8: {
                 return;
             }
             default:
                 System.out.println("Invalid Option!");
+                pressToContinue();
                 coursesMenu();
         }
 
@@ -474,6 +498,7 @@ public class Main {
             }
             default:
                 System.out.println("Invalid Option!");
+                pressToContinue();
                 registrationsMenu();
         }
 

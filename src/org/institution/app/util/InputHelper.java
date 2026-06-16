@@ -19,7 +19,7 @@ public class InputHelper {
                 if (skippable) {
                     return -1;
                 } else {
-                    System.out.println("Error: INVALID FORMAT");
+                    System.out.print("Error: INVALID FORMAT\n");
                 }
                 continue;
             }
@@ -27,7 +27,7 @@ public class InputHelper {
             try {
                 return Integer.parseInt(line);
             } catch (NumberFormatException e) {
-                System.out.println("Error: INVALID FORMAT");
+                System.out.print("Error: INVALID FORMAT\n");
             }
         }
     }
@@ -39,13 +39,13 @@ public class InputHelper {
             String line = sc.nextLine();
 
             if (line.isBlank()) {
-                System.out.println("Error: INVALID FORMAT");
+                System.out.print("Error: INVALID FORMAT\n");
             }
 
             try {
                 return Double.parseDouble(line);
             } catch (NumberFormatException e) {
-                System.out.println("Error: INVALID FORMAT");
+                System.out.print("Error: INVALID FORMAT\n");
             }
         }
     }
@@ -63,10 +63,10 @@ public class InputHelper {
                 if (skippable) {
                     return null;
                 } else {
-                    System.out.println("ERROR: INVALID FORMAT");
+                    System.out.print("ERROR: INVALID FORMAT\n");
                 }
             } else if (!Character.isLetter(line.charAt(0))) {
-                System.out.println("ERROR: MAY BEGIN WITH A LETTER");
+                System.out.print("ERROR: MAY BEGIN WITH A LETTER\n");
             } else {
                 return line;
             }
@@ -81,15 +81,15 @@ public class InputHelper {
             String line = sc.nextLine();
 
             if (line.isBlank()) {
-                System.out.println("Error: INVALID FORMAT");
+                System.out.print("Error: INVALID FORMAT\n");
                 continue;
             }
 
             if (line.length() > 1) {
-                System.out.print("Error: INVALID FORMAT");
+                System.out.print("Error: INVALID FORMAT\n");
                 continue;
             } else if (!Character.isLetter(line.charAt(0))) {
-                System.out.print("Error: INVALID FORMAT");
+                System.out.print("Error: INVALID FORMAT\n");
                 continue;
             }
 
@@ -100,7 +100,7 @@ public class InputHelper {
             } else if (c == 'n' || c == 'N') {
                 return false;
             } else {
-                System.out.println("Invalid Option!");
+                System.out.print("Invalid Option!\n");
             }
         }
     }    

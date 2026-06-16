@@ -28,9 +28,11 @@ public class RegistrationService {
             return Enum.Error.INACTIVE_STUDENT;
         }
 
-        Course c = courseService.getCourseByID(courseID);
+        if (getCourseRemainingQuota(courseID) <= 0) {
+            return Enum.Error.WRONG_INPUT_DATA;
+        }
 
-        if (c.getTeacherId() == -1) {
+        if (courseService.getCourseByID(courseID).getTeacherId() == -1) {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
@@ -77,10 +79,6 @@ public class RegistrationService {
     }
 
     public Enum.Error removeStudentRegistrations(int studentID) {
-        if (!studentService.existStudent(studentID)) {
-            return Enum.Error.WRONG_INPUT_DATA;
-        }
-
         ArrayList<Integer> indexes = new ArrayList<>();
 
         int index = 0;
