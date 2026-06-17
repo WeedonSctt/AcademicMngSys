@@ -21,7 +21,7 @@ public class RegistrationService {
 
     public Enum.Error newRegistration(int studentID, int courseID) {
         if (!studentService.existStudent(studentID) || !courseService.existCourse(courseID)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.STUDENT_OR_COURSE_NOT_FOUND;
         }
 
         if (!studentService.getStudentByID(studentID).isActive()) {
@@ -29,11 +29,11 @@ public class RegistrationService {
         }
 
         if (getCourseRemainingQuota(courseID) <= 0) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.QUOTA_AT_LIMIT;
         }
 
         if (courseService.getCourseByID(courseID).getTeacherId() == -1) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.NOT_ASSIGNED_TEACHER;
         }
 
         for (Registration r : repository.getRegistrations()) {
@@ -48,7 +48,6 @@ public class RegistrationService {
     }
 
     public void setAverageGrade(int studentID, ArrayList<Double> grades) {
-        
         double sum = 0;
         for (double g : grades) {
             sum += g;
@@ -58,18 +57,22 @@ public class RegistrationService {
     }
 
     public Enum.Error grade(int studentID, int courseID, double grade) {
+        if (!studentService.existStudent(studentID)) {
+            return Enum.Error.STUDENT_NOT_FOUND;
+        }
+
         if (!teacherService.existTeacher(courseService.getCourseByID(courseID).getTeacherId())) {
             return Enum.Error.TEACHER_NOT_FOUND;
         }
 
-        if (grade < 0.0 || grade > 10.0) {
-            return Enum.Error.WRONG_INPUT_DATA;
+        if (grade < 0.0 || grade > 100.0) {
+            return Enum.Error.INVALID_GRADE;
         }
 
         Registration reg = repository.getRegistration(studentID, courseID);
 
         if (reg == null) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.REGISTRATION_NOT_FOUND;
         }
 
         reg.setGrade(grade);
@@ -97,7 +100,7 @@ public class RegistrationService {
 
     public Enum.Error removeCourseRegistrations(int courseID) {
         if (!courseService.existCourse(courseID)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.COURSE_NOT_FOUND;
         }
 
         ArrayList<Integer> indexes = new ArrayList<>();
@@ -147,7 +150,7 @@ public class RegistrationService {
 
     public Enum.Error cancelRegistration(int studentID, int courseID) {
         if (!studentService.existStudent(studentID) || !courseService.existCourse(courseID)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.STUDENT_OR_COURSE_NOT_FOUND;
         }
 
         if (repository.getRegistration(studentID, courseID) == null) {

@@ -15,7 +15,7 @@ public class StudentService {
 
     public Enum.Error newStudent(String name, int age, String email) {
         if (!Validator.studentInputData(age, email)) {
-            return Enum.Error.INVALID_INPUT_DATA;
+            return Enum.Error.INVALID_AGE_OR_EMAIL;
         }
 
         for (Student s : repository.getStudents()) {
@@ -30,8 +30,12 @@ public class StudentService {
     }
 
     public Enum.Error editStudentData(int id, String name, int age, String email, boolean isActive) {
+        if (!existStudent(id)) {
+            return Enum.Error.STUDENT_NOT_FOUND;
+        }
+
         if (!Validator.studentInputData(age, email)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.INVALID_AGE_OR_EMAIL;
         }
         
         Student s = repository.getStudentByID(id);
@@ -54,6 +58,10 @@ public class StudentService {
     }
 
     public Enum.Error deleteStudent(int studentID) {
+        if (!existStudent(studentID)) {
+            return Enum.Error.STUDENT_NOT_FOUND;
+        }
+
         Student s = repository.getStudentByID(studentID);
         
         if (s.isActive()) {
@@ -78,13 +86,11 @@ public class StudentService {
         return Helper.studentToStringArray(s);
     }
 
-    // What the fuck is this??
     public void setAverageGrade(int id, double avg) {
         Student s = repository.getStudentByID(id);
         s.setAverageGrade(avg);
     }
 
-    // Sort sorts all the array, not only the return statement. that should not happen
     public ArrayList<ArrayList<String>> sortAlphabetically() {
         ArrayList<ArrayList<String>> studentsData = new ArrayList<>();
 

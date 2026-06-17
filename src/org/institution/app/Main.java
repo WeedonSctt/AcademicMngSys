@@ -345,7 +345,7 @@ public class Main {
                     String description = inputHelper.inputString(sc, "Course's description> ", false);
                     int maximumStudents = inputHelper.inputInteger(sc, "Course's maximum quota> ", false);
 
-                    if (manageError(courseService.newCourse(name, description, maximumStudents, -1))) {
+                    if (manageError(courseService.newCourse(name, description, maximumStudents))) {
                         showResume("COURSE");
                         showCourse(courseService.searchCourseByName(name));
                     }

@@ -15,7 +15,7 @@ public class TeacherService {
     
     public Enum.Error newTeacher(String name, String department, String email) {
         if (!Validator.teacherInputData(email)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.INVALID_EMAIL;
         }
 
         for (Teacher t : repository.getTeachers()) {
@@ -30,8 +30,12 @@ public class TeacherService {
     }
 
     public Enum.Error editTeacherData(int id, String name, String department, String email) {
+        if (!existTeacher(id)) {
+            return Enum.Error.TEACHER_NOT_FOUND;
+        }
+
         if (!Validator.teacherInputData(email)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.INVALID_EMAIL;
         }
 
 
@@ -54,7 +58,7 @@ public class TeacherService {
 
     public Enum.Error removeTeacher(int id) {
         if (!existTeacher(id)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.TEACHER_NOT_FOUND;
         }
 
         repository.removeTeacher(id);

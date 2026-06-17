@@ -32,13 +32,9 @@ public class CourseService {
         return assignedCoursesData;
     }
 
-    public Enum.Error newCourse(String name, String description, int maximumStudents, int teacherID) {
+    public Enum.Error newCourse(String name, String description, int maximumStudents) {
         if (maximumStudents < 0 || maximumStudents > 50) {
-            return Enum.Error.WRONG_INPUT_DATA;
-        }
-
-        if (!teacherService.existTeacher(teacherID) && teacherID != -1) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.INVALID_STUDENT_QUOTA;
         }
 
         for (Course c : repository.getCourses()) {
@@ -47,14 +43,20 @@ public class CourseService {
             }
         }
 
-        repository.newCourse(repository.getLastID() + 1, name, description, maximumStudents, teacherID);
+        repository.newCourse(repository.getLastID() + 1, name, description, maximumStudents, -1);
         
         return null;
     }
 
     public Enum.Error editCourse(int id, String name, String description, int maximumStudents) {
         if (maximumStudents < 0 || maximumStudents > 50) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.INVALID_STUDENT_QUOTA;
+        }
+
+        for (Course c : repository.getCourses()) {
+            if (c.getName().equals(name)) {
+                return Enum.Error.REPEATED_COURSE_NAME;
+            }
         }
         
         Course c = repository.getCourseByID(id);
@@ -68,7 +70,7 @@ public class CourseService {
 
     public Enum.Error assignTeacher(int courseID, int teacherID) {
         if (!existCourse(courseID)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.COURSE_NOT_FOUND;
         }
 
         if (!teacherService.existTeacher(teacherID)) {
@@ -83,7 +85,7 @@ public class CourseService {
 
     public Enum.Error removeCourse(int courseID) {
         if (!existCourse(courseID)) {
-            return Enum.Error.WRONG_INPUT_DATA;
+            return Enum.Error.COURSE_NOT_FOUND;
         }
 
         repository.removeCourse(repository.getCourseByID(courseID));
