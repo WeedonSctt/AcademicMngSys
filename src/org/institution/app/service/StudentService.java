@@ -124,7 +124,14 @@ public class StudentService {
         ArrayList<Student> students = repository.getStudents();
 
         for (Student s : students) {
-            studentsData.add(Helper.studentToStringArray(s));
+            ArrayList<String> student = Helper.studentToStringArray(s);
+
+            if (s.getAverageGrade() == -0.1) {
+                student.remove(4);
+                student.add(4, "UNDEFINED");
+            }
+
+            studentsData.add(student);
         }
         
         return studentsData;

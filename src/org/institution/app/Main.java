@@ -527,9 +527,10 @@ public class Main {
         }
         
         System.out.println(
+            "|  " +
             studentData.get(0) + "  |  " +
-            studentData.get(1) + ", " +
-            studentData.get(2) + " years old  |  " +
+            studentData.get(1) + "  |  " +
+            studentData.get(2) + "  |  " +
             studentData.get(3) + "  |  " +
             studentData.get(4) + "  |  " +
             active + "  |"
@@ -538,14 +539,16 @@ public class Main {
     }
     public static void showTeacher(ArrayList<String> teacherData) {
         System.out.println(
+            "|  " +
             teacherData.get(0) + "  |  " +
             teacherData.get(1) + "  |  " +
             teacherData.get(2) + "  |  " +
             teacherData.get(3) + "  |"
         );
-    }    
+    }
     public static void showCourse(ArrayList<String> courseData) {
         System.out.println(
+            "|  " +
             courseData.get(0) + "  |  " +
             courseData.get(1) + "  |  " +
             courseData.get(2) + "  |  " +
