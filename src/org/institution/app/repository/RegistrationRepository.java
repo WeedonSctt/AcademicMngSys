@@ -51,11 +51,11 @@ public class RegistrationRepository {
     }
 
     public void removeRegistrationsIndexes(ArrayList<Integer> indexes) {
-        for (int i : indexes) {
-            registrations.remove(i);
-        }
+        for (int i = indexes.size()-1; i > 0; i--) {
+            int a = indexes.get(i);
 
-        return;
+            registrations.remove(a);
+        }
     }
 
     public boolean saveRegistrationsToCSV() {

@@ -116,7 +116,7 @@ public class RegistrationService {
         repository.removeRegistrationsIndexes(indexes);
 
         // update students avg grade
-        for (int i : indexes) {
+        for (int i : studentIDs) {
             setAverageGrade(i, repository.getStudentGrades(i));
         }
 
