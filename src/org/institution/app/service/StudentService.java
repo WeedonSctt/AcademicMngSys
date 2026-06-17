@@ -108,7 +108,7 @@ public class StudentService {
     public ArrayList<ArrayList<String>> sortByAverageGrade() {
         ArrayList<ArrayList<String>> studentsData = new ArrayList<>();
 
-        ArrayList<Student> students = Helper.sortAlphabetically(repository.getStudents());
+        ArrayList<Student> students = Helper.sortByAverageGrade(repository.getStudents());
 
         for (Student s : students) {
             studentsData.add(Helper.studentToStringArray(s));
