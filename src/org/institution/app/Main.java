@@ -107,12 +107,14 @@ public class Main {
             System.out.println("9. Back");
 
             int option = inputHelper.inputInteger(sc, "> ", false);
+            System.out.println();
 
             switch (option) {
                 case 1: {
                     String name = inputHelper.inputString(sc, "Student's name> ", false);
                     int age = inputHelper.inputInteger(sc, "Student's age> ", false);
                     String email = inputHelper.inputString(sc, "Student's email> ", false);
+                    System.out.println();
 
                     if (manageError(studentService.newStudent(name, age, email))) {
                         showResume("STUDENT");
@@ -124,11 +126,13 @@ public class Main {
                 case 2: {
                     showStudents(studentService.getStudents());
                     int id = inputHelper.inputInteger(sc, "Student's id to edit> ", false);
+                    System.out.println();
 
                     String name = inputHelper.inputString(sc, "Student's name> ", true);
                     int age = inputHelper.inputInteger(sc, "Student's age> ", true);
                     String email = inputHelper.inputString(sc, "Student's email> ", true);
                     boolean isActive = inputHelper.inputBoolean(sc, "Active user? [y/n]> ");
+                    System.out.println();
 
                     if (manageError(studentService.editStudentData(id, name, age, email, isActive))) {
                         showResume("STUDENT");
@@ -140,6 +144,7 @@ public class Main {
                 case 3: {
                     showStudents(studentService.getStudents());
                     int id = inputHelper.inputInteger(sc, "Student's id to delete> ", false);
+                    System.out.println();
 
                     if (manageError(studentService.deleteStudent(id))) {
                         manageError(registrationService.removeStudentRegistrations(id));
@@ -157,6 +162,8 @@ public class Main {
                         break;
                     }
 
+                    System.out.println();
+
                     showResume("STUDENT");
                     showStudent(student);
 
@@ -172,6 +179,8 @@ public class Main {
                         break;
                     }
 
+                    System.out.println();
+
                     showResume("STUDENT");
                     showStudent(student);
 
@@ -183,11 +192,15 @@ public class Main {
                     break;
                 }
                 case 7: {
+                    System.out.println();
+
                     showStudents(studentService.sortByAverageGrade());
 
                     break;
                 }
                 case 8: {
+                    System.out.println();
+
                     showStudents(studentService.sortAlphabetically());
 
                     break;
@@ -197,8 +210,6 @@ public class Main {
                 }
                 default:
                     System.out.println("Invalid Option!");
-                    pressToContinue();
-                    studentsMenu();
             }
 
             pressToContinue();
@@ -229,6 +240,8 @@ public class Main {
                     String department = inputHelper.inputString(sc, "Teacher's department> ", false);
                     String email = inputHelper.inputString(sc, "Teacher's email> ", false);
 
+                    System.out.println();
+
                     if (manageError(teacherService.newTeacher(name, department, email))) {
                         showResume("TEACHER");
                         showTeacher(teacherService.searchTeacherByName(name));
@@ -239,10 +252,13 @@ public class Main {
                 case 2: {
                     showTeachers(teacherService.getTeachers());
                     int id = inputHelper.inputInteger(sc, "Teacher's id to edit> ", false);
+                    System.out.println();
 
                     String name = inputHelper.inputString(sc, "Teacher's name> ", true);
                     String department = inputHelper.inputString(sc, "Teacher's department> ", true);
                     String email = inputHelper.inputString(sc, "Teacher's email> ", true);
+
+                    System.out.println();
 
                     if (manageError(teacherService.editTeacherData(id, name, department, email))) {
                         showResume("TEACHER");
@@ -254,6 +270,8 @@ public class Main {
                 case 3: {
                     showTeachers(teacherService.getTeachers());
                     int id = inputHelper.inputInteger(sc, "ID from teacher to delete> ", false);
+
+                    System.out.println();
 
                     manageError(teacherService.removeTeacher(id));
 
@@ -269,6 +287,8 @@ public class Main {
                         break;
                     }
 
+                    System.out.println();
+
                     showResume("TEACHER");
                     showTeacher(teacher);
 
@@ -283,6 +303,8 @@ public class Main {
                         System.out.println("Could not find teacher");
                         break;
                     }
+
+                    System.out.println();
 
                     showResume("TEACHER");
                     showTeacher(teacher);
@@ -302,6 +324,8 @@ public class Main {
                         break;
                     }
 
+                    System.out.println();
+
                     showCourses(courseService.getAssignedCourses(id));
 
                     break;
@@ -311,7 +335,6 @@ public class Main {
                 }
                 default: {
                     System.out.println("Invalid Option!");
-                    pressToContinue();
                 }
             }
 
@@ -344,6 +367,7 @@ public class Main {
                     String name = inputHelper.inputString(sc, "Course's name> ", false);
                     String description = inputHelper.inputString(sc, "Course's description> ", false);
                     int maximumStudents = inputHelper.inputInteger(sc, "Course's maximum quota> ", false);
+                    System.out.println();
 
                     if (manageError(courseService.newCourse(name, description, maximumStudents))) {
                         showResume("COURSE");
@@ -355,10 +379,12 @@ public class Main {
                 case 2: {
                     showCourses(courseService.getCourses());
                     int id = inputHelper.inputInteger(sc, "ID of course to edit> ", false);
+                    System.out.println();
 
                     String name = inputHelper.inputString(sc, "New course's name> ", true);
                     String description = inputHelper.inputString(sc, "New course's description> ", true);
                     int maximumStudents = inputHelper.inputInteger(sc, "New course's maximum quota> ", true);
+                    System.out.println();
 
                     if (manageError(courseService.editCourse(id, name, description, maximumStudents))) {
                         showResume("COURSE");
@@ -370,6 +396,7 @@ public class Main {
                 case 3: {
                     showCourses(courseService.getCourses());
                     int id = inputHelper.inputInteger(sc, "ID of course to delete> ", false);
+                    System.out.println();
 
                     if (manageError(registrationService.removeCourseRegistrations(id))) {
                         manageError(courseService.removeCourse(id));
@@ -381,8 +408,12 @@ public class Main {
                     showCourses(courseService.getCourses());
                     int courseID = inputHelper.inputInteger(sc, "ID of course to assign teacher> ", false);
 
+                    System.out.println();
+
                     showTeachers(teacherService.getTeachers());
                     int teacherID = inputHelper.inputInteger(sc, "ID of teacher to assign course> ", false);
+
+                    System.out.println();
 
                     manageError(courseService.assignTeacher(courseID, teacherID));
 
@@ -403,6 +434,8 @@ public class Main {
                         break;
                     }
 
+                    System.out.println();
+
                     showStudents(students);
 
                     break;
@@ -414,10 +447,12 @@ public class Main {
                     int remain = registrationService.getCourseRemainingQuota(courseID);
 
                     if (remain != -1) {
-                        System.out.println(remain);
+                        System.out.println("There are " + remain + " registrations left in course");
                     } else {
                         System.out.println("Error: no course");
                     }
+
+                    System.out.println();
 
                     break;
                 }
@@ -426,8 +461,6 @@ public class Main {
                 }
                 default:
                     System.out.println("Invalid Option!");
-                    pressToContinue();
-                    coursesMenu();
             }
 
             pressToContinue();
@@ -456,8 +489,12 @@ public class Main {
                     showStudents(studentService.getStudents());
                     int studentID = inputHelper.inputInteger(sc, "ID of student to register> ", false);
 
+                    System.out.println();
+
                     showCourses(courseService.getCourses());
                     int courseID = inputHelper.inputInteger(sc, "ID of course to register> ", false);
+
+                    System.out.println();
 
                     manageError(registrationService.newRegistration(studentID, courseID));
 
@@ -467,8 +504,12 @@ public class Main {
                     showStudents(studentService.getStudents());
                     int studentID = inputHelper.inputInteger(sc, "Student who cancels registration> ", false);
 
+                    System.out.println();
+
                     showCourses(registrationService.getCoursesEnrolledByStudent(studentID));
                     int courseID = inputHelper.inputInteger(sc, "From which course you want to cancel registration> ", false);
+
+                    System.out.println();
 
                     manageError(registrationService.cancelRegistration(studentID, courseID));
 
@@ -478,8 +519,12 @@ public class Main {
                     showCourses(courseService.getCourses());
                     int courseID = inputHelper.inputInteger(sc, "From which course you want to set grade> ", false);
 
+                    System.out.println();
+
                     showStudents(registrationService.getEnrolledStudentsInCourse(courseID));
                     int studentID = inputHelper.inputInteger(sc, "ID of student to grade> ", false);
+
+                    System.out.println();
 
                     double grade = inputHelper.inputDouble(sc, "Grade> ");
 
@@ -498,6 +543,8 @@ public class Main {
                         break;
                     }
 
+                    System.out.println();
+
                     showAcademicHistory(academicHistory, studentID);
 
                     break;
@@ -507,8 +554,6 @@ public class Main {
                 }
                 default:
                     System.out.println("Invalid Option!");
-                    pressToContinue();
-                    registrationsMenu();
             }
 
             pressToContinue();
