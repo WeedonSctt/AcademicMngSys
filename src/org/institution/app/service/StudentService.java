@@ -18,10 +18,8 @@ public class StudentService {
             return Enum.Error.INVALID_AGE_OR_EMAIL;
         }
 
-        for (Student s : repository.getStudents()) {
-            if (s.getEmail().equals(email)) {
-                return Enum.Error.ALREADY_CREATED;
-            }
+        if (existEmail(email)) {
+            return Enum.Error.EMAIL_ALREADY_IN_USE;
         }
 
         repository.newStudent(repository.getLastID() + 1, name, age, email);
@@ -36,6 +34,10 @@ public class StudentService {
 
         if (!Validator.studentInputData(age, email)) {
             return Enum.Error.INVALID_AGE_OR_EMAIL;
+        }
+
+        if (existEmail(email)) {
+            return Enum.Error.EMAIL_ALREADY_IN_USE;
         }
         
         Student s = repository.getStudentByID(id);
@@ -165,6 +167,16 @@ public class StudentService {
         }
 
         return null;
+    }
+
+    public boolean existEmail(String email) {
+        for (Student s : repository.getStudents()) {
+            if (s.getEmail().equals(email)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

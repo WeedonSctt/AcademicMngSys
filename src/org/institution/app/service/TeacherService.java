@@ -18,10 +18,8 @@ public class TeacherService {
             return Enum.Error.INVALID_EMAIL;
         }
 
-        for (Teacher t : repository.getTeachers()) {
-            if (t.getEmail().equals(email)) {
-                return Enum.Error.ALREADY_CREATED;
-            }
+        if (existEmail(email)) {
+            return Enum.Error.EMAIL_ALREADY_IN_USE;
         }
 
         repository.newTeacher(repository.getLastID() + 1, name, department, email);
@@ -36,6 +34,10 @@ public class TeacherService {
 
         if (!Validator.teacherInputData(email)) {
             return Enum.Error.INVALID_EMAIL;
+        }
+
+        if (existEmail(email)) {
+            return Enum.Error.EMAIL_ALREADY_IN_USE;
         }
 
 
@@ -117,6 +119,16 @@ public class TeacherService {
     public boolean existTeacher(int id) {
         for (Teacher t : repository.getTeachers()) {
             if (t.getID() == id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean existEmail(String email) {
+        for (Teacher t : repository.getTeachers()) {
+            if (t.getEmail().equals(email)) {
                 return true;
             }
         }

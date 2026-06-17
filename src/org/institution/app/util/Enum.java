@@ -5,6 +5,7 @@ public class Enum {
         // GLOBAL
 	    ALREADY_CREATED,
         STUDENT_OR_COURSE_NOT_FOUND,
+        EMAIL_ALREADY_IN_USE,
 
         // COURSE SERVICE
         INVALID_STUDENT_QUOTA,
