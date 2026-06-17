@@ -61,6 +61,11 @@ public class Helper {
         return students;
     }
 
+    public static ArrayList<Student> sortByID(ArrayList<Student> students) {
+        students.sort(Comparator.comparing(Student::getId));
+        return students;
+    }
+
     public static String stringArrayToCSV(ArrayList<String> array) {
         StringBuilder str = new StringBuilder();
         

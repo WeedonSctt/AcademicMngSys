@@ -87,13 +87,14 @@ public class StudentService {
     // Sort sorts all the array, not only the return statement. that should not happen
     public ArrayList<ArrayList<String>> sortAlphabetically() {
         ArrayList<ArrayList<String>> studentsData = new ArrayList<>();
-        
-        ArrayList<Student> students = repository.getStudents();
-        students = Helper.sortAlphabetically(students);
+
+        ArrayList<Student> students = Helper.sortAlphabetically(repository.getStudents());
 
         for (Student s : students) {
             studentsData.add(Helper.studentToStringArray(s));
         }
+
+        Helper.sortByID(students);
 
         return studentsData;
     }
@@ -101,12 +102,13 @@ public class StudentService {
     public ArrayList<ArrayList<String>> sortByAverageGrade() {
         ArrayList<ArrayList<String>> studentsData = new ArrayList<>();
 
-        ArrayList<Student> students = repository.getStudents();
-        students =  Helper.sortByAverageGrade(students);
+        ArrayList<Student> students = Helper.sortAlphabetically(repository.getStudents());
 
         for (Student s : students) {
             studentsData.add(Helper.studentToStringArray(s));
         }
+
+        Helper.sortByID(students);
 
         return studentsData;
     }
