@@ -1,6 +1,7 @@
 package org.institution.app.repository;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import org.institution.app.model.Student;
 import org.institution.app.util.FileManager;
@@ -21,21 +22,32 @@ public class StudentRepository {
         this.lastID += 1;
     }
 
-    public Student getStudentByName(String name) {
-        // There could be different students with same names
+    public ArrayList<Student> getStudentsByName(String name) {
+        ArrayList<Student> _students = new ArrayList<>();
+
         for (Student s : students) {
             if (s.getName().equals(name)) {
-                return s;
+                _students.add(s);
             }
                 
         }
 
-        return null;
+        return _students;
     }
 
     public Student getStudentByID(int id) {
         for (Student s : students) {
             if (s.getId() == id) {
+                return s;
+            }
+        }
+
+        return null;
+    }
+
+    public Student getStudentByEmail(String email) {
+        for (Student s : students) {
+            if (s.getEmail().equals(email)){
                 return s;
             }
         }

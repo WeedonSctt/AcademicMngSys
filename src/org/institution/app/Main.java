@@ -118,7 +118,7 @@ public class Main {
 
                     if (manageError(studentService.newStudent(name, age, email))) {
                         showResume("STUDENT");
-                        showStudent(studentService.searchByName(name));
+                        showStudent(studentService.searchByEmail(email));
                     }
 
                     break;
@@ -155,17 +155,16 @@ public class Main {
                 case 4: {
                     String name = inputHelper.inputString(sc, "Name of student to search> ", false);
 
-                    ArrayList<String> student = studentService.searchByName(name);
+                    ArrayList<ArrayList<String>> students = studentService.searchByName(name);
 
-                    if (student == null) {
+                    if (students == null) {
                         System.out.println("Failed to search student");
                         break;
                     }
 
                     System.out.println();
 
-                    showResume("STUDENT");
-                    showStudent(student);
+                    showStudents(students);
 
                     break;
                 }
@@ -563,12 +562,17 @@ public class Main {
     public static void reportsMenu() {}
 
     public static void showStudent(ArrayList<String> studentData) {
-        String active;
-        
+        String active = "";
+        String averageGrade = "";
+
         if (studentData.get(5).equals("true")) {
             active = "ACTIVE";
         } else {
             active = "INACTIVE";
+        }
+
+        if (studentData.get(4).equals("-0.1")) {
+            averageGrade = "UNDEFINED";
         }
         
         System.out.println(
@@ -577,7 +581,7 @@ public class Main {
             studentData.get(1) + "  |  " +
             studentData.get(2) + "  |  " +
             studentData.get(3) + "  |  " +
-            studentData.get(4) + "  |  " +
+            averageGrade + "  |  " +
             active + "  |"
         );
 

@@ -75,17 +75,41 @@ public class StudentService {
         return null;
     }
 
-    public ArrayList<String> searchByName(String name) {
-        Student s = repository.getStudentByName(name);
+    public ArrayList<ArrayList<String>> searchByName(String name) {
+        ArrayList<Student> students = repository.getStudentsByName(name);
 
-        return Helper.studentToStringArray(s);
-        
+        if (students == null) {
+            return null;
+        }
+
+        ArrayList<ArrayList<String>> studentsData = new ArrayList<>();
+
+        for (Student s : students) {
+            studentsData.add(Helper.studentToStringArray(s));
+        }
+
+        return studentsData;
     }
 
     public ArrayList<String> searchByID(int id) {
+        if (!existStudent(id)) {
+            return null;
+        }
+
         Student s = repository.getStudentByID(id);
 
         return Helper.studentToStringArray(s);
+    }
+
+    public ArrayList<String> searchByEmail(String email) {
+        Student s = repository.getStudentByEmail(email);
+
+        if (s == null) {
+            return null;
+        }
+
+        return Helper.studentToStringArray(s);
+
     }
 
     public void setAverageGrade(int id, double avg) {
@@ -126,14 +150,7 @@ public class StudentService {
         ArrayList<Student> students = repository.getStudents();
 
         for (Student s : students) {
-            ArrayList<String> student = Helper.studentToStringArray(s);
-
-            if (s.getAverageGrade() == -0.1) {
-                student.remove(4);
-                student.add(4, "UNDEFINED");
-            }
-
-            studentsData.add(student);
+            studentsData.add(Helper.studentToStringArray(s));
         }
         
         return studentsData;
@@ -170,10 +187,8 @@ public class StudentService {
     }
 
     public boolean existEmail(String email) {
-        for (Student s : repository.getStudents()) {
-            if (s.getEmail().equals(email)) {
-                return true;
-            }
+        if (repository.getStudentByEmail(email) != null) {
+            return true;
         }
 
         return false;
