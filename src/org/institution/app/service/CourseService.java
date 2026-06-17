@@ -49,7 +49,7 @@ public class CourseService {
     }
 
     public Enum.Error editCourse(int id, String name, String description, int maximumStudents) {
-        if (maximumStudents < 0 || maximumStudents > 50) {
+        if ((maximumStudents < 0 || maximumStudents > 50) && maximumStudents != -1) {
             return Enum.Error.INVALID_STUDENT_QUOTA;
         }
 
@@ -61,9 +61,17 @@ public class CourseService {
         
         Course c = repository.getCourseByID(id);
 
-        c.setName(name);
-        c.setDescription(description);
-        c.setMaximumStudents(maximumStudents);
+        if (name != null) {
+            c.setName(name);
+        }
+
+        if (description != null) {
+            c.setDescription(description);
+        }
+
+        if (maximumStudents != -1) {
+            c.setMaximumStudents(maximumStudents);
+        }
 
         return null;
     }
@@ -158,7 +166,15 @@ public class CourseService {
 
     private ArrayList<String> replaceTeacherIDWithName(ArrayList<String> course, Course c) {
         course.removeLast();
-        course.add(teacherService.getTeacherByID(c.getTeacherId()).getName());
+        int teacherID = c.getTeacherId();
+
+        if (teacherID == -1) {
+            course.add("NOT ASSIGNED");
+        } else {
+            course.add(teacherService.getTeacherByID(teacherID).getName());
+
+        }
+
 
         return course;
     }
