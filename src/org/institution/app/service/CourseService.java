@@ -49,6 +49,10 @@ public class CourseService {
     }
 
     public Enum.Error editCourse(int id, String name, String description, int maximumStudents) {
+        if (!existCourse(id)) {
+            return Enum.Error.COURSE_NOT_FOUND;
+        }
+
         if ((maximumStudents < 0 || maximumStudents > 50) && maximumStudents != -1) {
             return Enum.Error.INVALID_STUDENT_QUOTA;
         }
@@ -177,6 +181,14 @@ public class CourseService {
 
 
         return course;
+    }
+
+    public void removeTeacherAssignedCourses(int teacherID) {
+        for (Course c : repository.getCourses()) {
+            if (c.getTeacherId() == teacherID) {
+                c.setTeacherId(-1);
+            }
+        }
     }
 
 }

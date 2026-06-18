@@ -48,12 +48,21 @@ public class RegistrationService {
     }
 
     public void setAverageGrade(int studentID, ArrayList<Double> grades) {
-        double sum = 0;
-        for (double g : grades) {
-            sum += g;
+        double avg;
+
+        if (grades.isEmpty()) {
+            avg = 0;
+        } else {
+            double sum = 0;
+            for (double g : grades) {
+                sum += g;
+            }
+
+            avg = sum/grades.size();
         }
 
-        studentService.setAverageGrade(studentID, sum/grades.size());
+
+        studentService.setAverageGrade(studentID, avg);
     }
 
     public Enum.Error grade(int studentID, int courseID, double grade) {

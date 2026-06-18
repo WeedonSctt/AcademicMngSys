@@ -272,7 +272,9 @@ public class Main {
 
                     System.out.println();
 
-                    manageError(teacherService.removeTeacher(id));
+                    if (manageError(teacherService.removeTeacher(id))) {
+                        courseService.removeTeacherAssignedCourses(id);
+                    }
 
                     break;
                 }
