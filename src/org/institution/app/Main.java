@@ -562,8 +562,8 @@ public class Main {
     public static void reportsMenu() {}
 
     public static void showStudent(ArrayList<String> studentData) {
-        String active = "";
-        String averageGrade = "";
+        String active;
+        String averageGrade;
 
         if (studentData.get(5).equals("true")) {
             active = "ACTIVE";
@@ -573,6 +573,8 @@ public class Main {
 
         if (studentData.get(4).equals("-0.1")) {
             averageGrade = "UNDEFINED";
+        } else {
+            averageGrade = studentData.get(4);
         }
         
         System.out.println(
