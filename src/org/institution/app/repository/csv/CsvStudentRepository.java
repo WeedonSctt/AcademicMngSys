@@ -1,0 +1,128 @@
+package org.institution.app.repository.csv;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import org.institution.app.repository.StudentRepository;
+import org.institution.app.model.Student;
+import org.institution.app.util.FileManager;
+import org.institution.app.util.Helper;
+
+public class CsvStudentRepository implements StudentRepository {
+    private ArrayList<Student> students = new ArrayList<>();
+    private FileManager reader = new FileManager();
+    private FileManager writer = new FileManager();
+    private int lastID;
+
+    public CsvStudentRepository() {
+        this.lastID = 0;
+    }
+
+    @Override
+    public void newStudent(int id, String name, int age, String email) {
+        students.add(new Student(id, name, age, email));
+        this.lastID += 1;
+    }
+
+    @Override
+    public ArrayList<Student> getStudentsByName(String name) {
+        ArrayList<Student> _students = new ArrayList<>();
+
+        for (Student s : students) {
+            if (s.getName().equals(name)) {
+                _students.add(s);
+            }
+                
+        }
+
+        return _students;
+    }
+
+    @Override
+    public Student getStudentByID(int id) {
+        for (Student s : students) {
+            if (s.getId() == id) {
+                return s;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Student getStudentByEmail(String email) {
+        for (Student s : students) {
+            if (s.getEmail().equals(email)){
+                return s;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public void deleteStudent(int id) {
+        Student s = getStudentByID(id);
+        
+        students.remove(s);
+    }
+
+    @Override
+    public boolean save() {
+        ArrayList<ArrayList<String>> studentsData = new ArrayList<>();
+        
+        for (Student s : students) {
+            studentsData.add(Helper.studentToStringArray(s));
+        }
+
+        try {
+            writer.writeToFile("students.txt", studentsData);
+        } catch (IOException e) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    @Override
+    public boolean load() {
+        ArrayList<ArrayList<String>> studentsData; 
+        
+        try {
+            studentsData = reader.readFromFile("students.txt");
+        } catch (IOException e) {
+            return false;
+        }
+
+        for (ArrayList<String> array : studentsData) {
+            students.add(new Student(
+                Integer.parseInt(array.get(0)),
+                array.get(1),
+                Integer.parseInt(array.get(2)),
+                array.get(3),
+                Double.parseDouble(array.get(4)),
+                Boolean.parseBoolean(array.get(5))
+            ));
+        }
+
+        int lastID = 0;
+        for (Student s : students) {
+            int studentID = s.getId();
+
+            if (studentID > lastID) {
+                lastID = studentID;
+            }
+        }
+
+        this.lastID = lastID;
+
+        return true;
+    }
+
+    // Getters
+    @Override
+    public int getLastID() { return lastID; }
+
+    @Override
+    public ArrayList<Student> getStudents() { return students; }
+
+}

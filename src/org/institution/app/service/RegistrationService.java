@@ -102,7 +102,7 @@ public class RegistrationService {
             index++;
         }
 
-        repository.removeRegistrationsIndexes(indexes);
+        repository.deleteRegistrationsIndexes(indexes);
 
         return null;
     }
@@ -125,7 +125,7 @@ public class RegistrationService {
             index ++;
         }
 
-        repository.removeRegistrationsIndexes(indexes);
+        repository.deleteRegistrationsIndexes(indexes);
 
         // update students avg grade
         for (int i : studentIDs) {
@@ -166,7 +166,7 @@ public class RegistrationService {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
-        repository.removeRegistration(studentID, courseID);
+        repository.deleteRegistration(studentID, courseID);
         setAverageGrade(studentID, repository.getStudentGrades(studentID));
 
         return null;
@@ -219,11 +219,11 @@ public class RegistrationService {
     }
 
     public boolean save() {
-        return repository.saveRegistrationsToCSV();
+        return repository.save();
     }
 
     public boolean loadRepo() {
-        return repository.loadRegistrationsFromCSV();
+        return repository.load();
     }
 
     public ArrayList<ArrayList<String>> getCoursesEnrolledByStudent(int studentID) {

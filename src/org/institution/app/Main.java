@@ -3,6 +3,7 @@ package org.institution.app;
 import java.util.Scanner;
 import java.util.ArrayList;
 import org.institution.app.repository.*;
+import org.institution.app.repository.csv.*;
 import org.institution.app.service.*;
 import org.institution.app.util.Enum;
 import org.institution.app.util.*;
@@ -11,10 +12,10 @@ public class Main {
     final private static Scanner sc = new Scanner(System.in);
 
     // repositories initialization
-    final private static StudentRepository studentRepository = new StudentRepository();
-    final private static TeacherRepository teacherRepository = new TeacherRepository();
-    final private static CourseRepository courseRepository = new CourseRepository();
-    final private static RegistrationRepository registrationRepository = new RegistrationRepository();
+    final private static StudentRepository studentRepository = new CsvStudentRepository();
+    final private static TeacherRepository teacherRepository = new CsvTeacherRepository();
+    final private static CourseRepository courseRepository = new CsvCourseRepository();
+    final private static RegistrationRepository registrationRepository = new CsvRegistrationRepository();
 
     // services initialization | dependencies injection
     final private static StudentService studentService = new StudentService(studentRepository);
@@ -24,7 +25,7 @@ public class Main {
 
     final private static InputHelper inputHelper = new InputHelper();
 
-    static void main() {
+    public static void main(String[] args) {
         
         boolean flow = true;
 

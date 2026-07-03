@@ -157,11 +157,11 @@ public class StudentService {
     }
 
     public boolean save() {
-        return repository.saveStudentsToCSV();
+        return repository.save();
     }
 
     public boolean loadRepo() {
-        return repository.loadStudentsFromCSV();
+        return repository.load();
     }
 
     public boolean existStudent(int id) {

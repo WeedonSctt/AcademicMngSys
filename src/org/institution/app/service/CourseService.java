@@ -100,7 +100,7 @@ public class CourseService {
             return Enum.Error.COURSE_NOT_FOUND;
         }
 
-        repository.removeCourse(repository.getCourseByID(courseID));
+        repository.deleteCourse(repository.getCourseByID(courseID));
 
         return null;
     }
@@ -133,11 +133,11 @@ public class CourseService {
     }
 
     public boolean save() {
-        return repository.saveCoursesToCSV();
+        return repository.save();
     }
 
     public boolean loadRepo() {
-        return repository.loadCoursesFromCSV();
+        return repository.load();
     }
 
     public boolean existCourse(int id) {

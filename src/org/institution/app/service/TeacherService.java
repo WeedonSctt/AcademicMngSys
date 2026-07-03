@@ -63,7 +63,7 @@ public class TeacherService {
             return Enum.Error.TEACHER_NOT_FOUND;
         }
 
-        repository.removeTeacher(id);
+        repository.deleteTeacher(id);
 
         return null;
     }
@@ -109,11 +109,11 @@ public class TeacherService {
     }
 
     public boolean save() {
-        return repository.saveTeachersToCSV();
+        return repository.save();
     }
 
     public boolean loadRepo() {
-        return repository.loadTeachersFromCSV();
+        return repository.load();
     }
 
     public boolean existTeacher(int id) {
