@@ -13,8 +13,8 @@ public class CsvRegistrationRepository implements RegistrationRepository {
     private FileManager writer = new FileManager();
 
     @Override
-    public void newRegistration(int studentID, int courseID) {
-        registrations.add(new Registration(studentID, courseID));
+    public void newRegistration(Registration r) {
+        registrations.add(r);
     }
 
     @Override
@@ -42,25 +42,16 @@ public class CsvRegistrationRepository implements RegistrationRepository {
     }
 
     @Override
-    public void deleteRegistration(int studentID, int courseID) {
-        for (int i = 0; i < registrations.size(); i++) {
-            Registration r = registrations.get(i);
-
-            if (r.getStudentId() == studentID && r.getCourseId() == courseID) {
-                registrations.remove(r);
-
-                break;
-            }
-        }
-
+    public void deleteRegistration(Registration r) {
+        registrations.remove(r);
     }
 
     @Override
-    public void deleteRegistrationsIndexes(ArrayList<Integer> indexes) {
-        for (int i = indexes.size()-1; i > 0; i--) {
-            int a = indexes.get(i);
+    public void deleteRegistrations(ArrayList<Registration> regs) {
+        for (int i = regs.size()-1; i > 0; i--) {
+            Registration r = regs.get(i);
 
-            registrations.remove(a);
+            registrations.remove(r);
         }
     }
 

@@ -5,7 +5,7 @@ import org.institution.app.model.Student;
 
 public interface StudentRepository {
 
-    void newStudent(int id, String name, int age, String email);
+    void newStudent(Student s);
 
     Student getStudentByID(int id);
 
@@ -21,6 +21,6 @@ public interface StudentRepository {
 
     int getLastID();
 
-    void deleteStudent(int id);
+    void deleteStudent(Student s);
 
 }

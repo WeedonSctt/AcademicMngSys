@@ -22,7 +22,8 @@ public class StudentService {
             return Enum.Error.EMAIL_ALREADY_IN_USE;
         }
 
-        repository.newStudent(repository.getLastID() + 1, name, age, email);
+        Student s = new Student(repository.getLastID() + 1, name, age, email);
+        repository.newStudent(s);
 
         return null;
     }
@@ -70,7 +71,7 @@ public class StudentService {
             return Enum.Error.ACTIVE_STUDENT;
         }
 
-        repository.deleteStudent(studentID);
+        repository.deleteStudent(s);
         
         return null;
     }

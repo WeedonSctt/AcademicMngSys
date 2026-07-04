@@ -5,7 +5,7 @@ import org.institution.app.model.Course;
 
 public interface CourseRepository {
 
-    void newCourse(int id, String name, String description, int maximumStudents, int teacherID);
+    void newCourse(Course c);
 
     Course getCourseByID(int id);
 

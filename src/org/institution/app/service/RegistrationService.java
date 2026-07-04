@@ -42,7 +42,8 @@ public class RegistrationService {
             }
         }
 
-        repository.newRegistration(studentID, courseID);
+        Registration r = new Registration(studentID, courseID);
+        repository.newRegistration(r);
 
         return null;
     }
@@ -91,18 +92,15 @@ public class RegistrationService {
     }
 
     public Enum.Error removeStudentRegistrations(int studentID) {
-        ArrayList<Integer> indexes = new ArrayList<>();
+        ArrayList<Registration> regs = new ArrayList<>();
 
-        int index = 0;
         for (Registration r : repository.getRegistrations()) {
             if (r.getStudentId() == studentID) {
-                indexes.add(index);
+                regs.add(r);
             }
-
-            index++;
         }
 
-        repository.deleteRegistrationsIndexes(indexes);
+        repository.deleteRegistrations(regs);
 
         return null;
     }
@@ -112,20 +110,17 @@ public class RegistrationService {
             return Enum.Error.COURSE_NOT_FOUND;
         }
 
-        ArrayList<Integer> indexes = new ArrayList<>();
+        ArrayList<Registration> regs = new ArrayList<>();
         ArrayList<Integer> studentIDs = new ArrayList<>();
 
-        int index = 0;
         for (Registration r : repository.getRegistrations()) {
             if (r.getCourseId() == courseID) {
-                indexes.add(index);
+                regs.add(r);
                 studentIDs.add(r.getStudentId());
             }
-
-            index ++;
         }
 
-        repository.deleteRegistrationsIndexes(indexes);
+        repository.deleteRegistrations(regs);
 
         // update students avg grade
         for (int i : studentIDs) {
@@ -166,7 +161,8 @@ public class RegistrationService {
             return Enum.Error.WRONG_INPUT_DATA;
         }
 
-        repository.deleteRegistration(studentID, courseID);
+        Registration r = repository.getRegistration(studentID, courseID);
+        repository.deleteRegistration(r);
         setAverageGrade(studentID, repository.getStudentGrades(studentID));
 
         return null;

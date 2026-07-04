@@ -18,8 +18,8 @@ public class CsvStudentRepository implements StudentRepository {
     }
 
     @Override
-    public void newStudent(int id, String name, int age, String email) {
-        students.add(new Student(id, name, age, email));
+    public void newStudent(Student s) {
+        students.add(s);
         this.lastID += 1;
     }
 
@@ -60,9 +60,7 @@ public class CsvStudentRepository implements StudentRepository {
     }
 
     @Override
-    public void deleteStudent(int id) {
-        Student s = getStudentByID(id);
-        
+    public void deleteStudent(Student s) {
         students.remove(s);
     }
 

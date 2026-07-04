@@ -43,7 +43,9 @@ public class CourseService {
             }
         }
 
-        repository.newCourse(repository.getLastID() + 1, name, description, maximumStudents, -1);
+        Course course = new Course(repository.getLastID() + 1, name, description, maximumStudents, -1);
+
+        repository.newCourse(course);
         
         return null;
     }

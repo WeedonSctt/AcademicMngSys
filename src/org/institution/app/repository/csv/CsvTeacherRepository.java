@@ -19,8 +19,8 @@ public class CsvTeacherRepository implements TeacherRepository {
     }
 
     @Override
-    public void newTeacher(int id, String name, String department, String email) {
-        teachers.add(new Teacher(id, name, department, email));
+    public void newTeacher(Teacher t) {
+        teachers.add(t);
         this.lastID += 1;
         return;
     }
@@ -56,9 +56,7 @@ public class CsvTeacherRepository implements TeacherRepository {
     public int getLastID() { return lastID; }
 
     @Override
-    public void deleteTeacher(int id) {
-        Teacher t = getTeacherByID(id);
-        
+    public void deleteTeacher(Teacher t) {        
         teachers.remove(t);
     }
 
@@ -79,6 +77,7 @@ public class CsvTeacherRepository implements TeacherRepository {
         return true;
     }
 
+    @Override
     public boolean load() {
         ArrayList<ArrayList<String>> teachersData; 
         

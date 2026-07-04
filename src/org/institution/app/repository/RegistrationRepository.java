@@ -5,7 +5,7 @@ import org.institution.app.model.Registration;
 
 public interface RegistrationRepository {
 
-    void newRegistration(int studentID, int courseID);
+    void newRegistration(Registration r);
 
     Registration getRegistration(int stID, int cID);
 
@@ -17,8 +17,8 @@ public interface RegistrationRepository {
 
     boolean load();
 
-    void deleteRegistration(int studentID, int courseID);
+    void deleteRegistration(Registration r);
 
-    void deleteRegistrationsIndexes(ArrayList<Integer> indexes);
+    void deleteRegistrations(ArrayList<Registration> regs);
     
 }

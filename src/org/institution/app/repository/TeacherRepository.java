@@ -5,7 +5,7 @@ import org.institution.app.model.Teacher;
 
 public interface TeacherRepository {
 
-    void newTeacher(int id, String name, String department, String email);
+    void newTeacher(Teacher t);
 
     Teacher getTeacherByID(int id);
 
@@ -19,6 +19,6 @@ public interface TeacherRepository {
 
     int getLastID();
 
-    void deleteTeacher(int id);
+    void deleteTeacher(Teacher t);
     
 }

@@ -22,7 +22,8 @@ public class TeacherService {
             return Enum.Error.EMAIL_ALREADY_IN_USE;
         }
 
-        repository.newTeacher(repository.getLastID() + 1, name, department, email);
+        Teacher t = new Teacher(repository.getLastID() + 1,name, department, email);
+        repository.newTeacher(t);
 
         return null;
     }
@@ -63,7 +64,8 @@ public class TeacherService {
             return Enum.Error.TEACHER_NOT_FOUND;
         }
 
-        repository.deleteTeacher(id);
+        Teacher t = repository.getTeacherByID(id);
+        repository.deleteTeacher(t);
 
         return null;
     }
