@@ -1,14 +1,12 @@
-package org.institution.app.service.impl;
+package org.institution.app.service.export.teacher.impl;
 
-import org.institution.app.service.StudentExportService;
-import org.institution.app.model.Student;
+import org.institution.app.service.export.teacher.TeacherExportService;
+import org.institution.app.model.Teacher;
 import java.util.List;
 
-public class JsonStudentExportImpl implements StudentExportService {
-    public JsonStudentExportImpl() {}
-    
+public class TeacherJsonExporterImpl implements TeacherExportService {
     @Override
-    public String export(List<Student> students) {
+    public String export(List<Teacher> teachers) {
         int indentation = 0;
         StringBuilder json = new StringBuilder();
 
@@ -16,10 +14,10 @@ public class JsonStudentExportImpl implements StudentExportService {
         indentation++;
         indent(json, indentation);
 
-        for (int i = 0; i < students.size(); i++) {
-            objectToJson(json, students.get(i), indentation);
+        for (int i = 0; i < teachers.size(); i++) {
+            objectToJson(json, teachers.get(i), indentation);
             
-            if (i + 1 != students.size()) {
+            if (i + 1 != teachers.size()) {
                 json.append(",\n");
                 indent(json, indentation);
             }
@@ -33,15 +31,13 @@ public class JsonStudentExportImpl implements StudentExportService {
         return json.toString();
     }
 
-    private static void objectToJson(StringBuilder json, Student s, int indentation) {
+    private static void objectToJson(StringBuilder json, Teacher t, int indentation) {
         json.append("{\n"); indentation++;
 
-        appendField(json, "id", s.getId(), indentation, true);
-        appendField(json, "name", s.getName(), indentation, false);
-        appendField(json, "age", s.getAge(), indentation, false);
-        appendField(json, "email", s.getEmail(), indentation, false);
-        appendField(json, "averageGrade", s.getAverageGrade(), indentation, false);
-        appendField(json, "isActive", s.isActive(), indentation, false);
+        appendField(json, "id", t.getID(), indentation, true);
+        appendField(json, "name", t.getName(), indentation, false);
+        appendField(json, "department", t.getDepartment(), indentation, false);
+        appendField(json, "email", t.getEmail(), indentation, false);
 
         indentation--;
         indent(json, indentation);
@@ -104,18 +100,6 @@ public class JsonStudentExportImpl implements StudentExportService {
         json.append(value);
     }
 
-    private static void appendField(StringBuilder json, String key, double value, int indentation, boolean isFirst) {
-        beginField(json, isFirst, indentation);
-        appendKey(json, key);
-        json.append(value);
-    }
-
-    private static void appendField(StringBuilder json, String key, boolean value, int indentation, boolean isFirst) {
-        beginField(json, isFirst, indentation);
-        appendKey(json, key);
-        json.append(value);
-    }
-
     private static void appendString(StringBuilder json, String value) {
         if (value == null) {
             json.append("null");
@@ -136,4 +120,5 @@ public class JsonStudentExportImpl implements StudentExportService {
             .append(key)
             .append("\": ");
     }
+
 }
