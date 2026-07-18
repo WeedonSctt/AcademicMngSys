@@ -1,14 +1,12 @@
-package org.institution.app.service.export.course.impl;
+package org.institution.app.serializer.teacher.impl;
 
-import org.institution.app.service.export.course.CourseExportService;
-import org.institution.app.model.Course;
+import org.institution.app.serializer.teacher.TeacherSerializer;
+import org.institution.app.model.Teacher;
 import java.util.List;
 
-public class JsonCourseExporterImpl implements CourseExportService {
-    public JsonCourseExporterImpl() {}
-    
+public class JsonTeacherSerializer implements TeacherSerializer {
     @Override
-    public String export(List<Course> courses) {
+    public String export(List<Teacher> teachers) {
         int indentation = 0;
         StringBuilder json = new StringBuilder();
 
@@ -16,10 +14,10 @@ public class JsonCourseExporterImpl implements CourseExportService {
         indentation++;
         indent(json, indentation);
 
-        for (int i = 0; i < courses.size(); i++) {
-            objectToJson(json, courses.get(i), indentation);
+        for (int i = 0; i < teachers.size(); i++) {
+            objectToJson(json, teachers.get(i), indentation);
             
-            if (i + 1 != courses.size()) {
+            if (i + 1 != teachers.size()) {
                 json.append(",\n");
                 indent(json, indentation);
             }
@@ -32,15 +30,17 @@ public class JsonCourseExporterImpl implements CourseExportService {
 
         return json.toString();
     }
+    
+    @Override
+    public String getExtension() { return "json"; }
 
-    private static void objectToJson(StringBuilder json, Course c, int indentation) {
+    private static void objectToJson(StringBuilder json, Teacher t, int indentation) {
         json.append("{\n"); indentation++;
 
-        appendField(json, "id", c.getId(), indentation, true);
-        appendField(json, "name", c.getName(), indentation, false);
-        appendField(json, "description", c.getDescription(), indentation, false);
-        appendField(json, "maximumStudents", c.getMaximumStudents(), indentation, false);
-        appendField(json, "teacherId", c.getTeacherId(), indentation, false);
+        appendField(json, "id", t.getID(), indentation, true);
+        appendField(json, "name", t.getName(), indentation, false);
+        appendField(json, "department", t.getDepartment(), indentation, false);
+        appendField(json, "email", t.getEmail(), indentation, false);
 
         indentation--;
         indent(json, indentation);
@@ -123,4 +123,5 @@ public class JsonCourseExporterImpl implements CourseExportService {
             .append(key)
             .append("\": ");
     }
+
 }

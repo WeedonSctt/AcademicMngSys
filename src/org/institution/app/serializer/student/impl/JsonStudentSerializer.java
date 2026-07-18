@@ -1,12 +1,10 @@
-package org.institution.app.service.export.student.impl;
+package org.institution.app.serializer.student.impl;
 
-import org.institution.app.service.export.student.StudentExportService;
+import org.institution.app.serializer.student.StudentSerializer;
 import org.institution.app.model.Student;
 import java.util.List;
 
-public class JsonStudentExportImpl implements StudentExportService {
-    public JsonStudentExportImpl() {}
-    
+public class JsonStudentSerializer implements StudentSerializer {
     @Override
     public String export(List<Student> students) {
         int indentation = 0;
@@ -33,6 +31,9 @@ public class JsonStudentExportImpl implements StudentExportService {
         return json.toString();
     }
 
+    @Override
+    public String getExtension() { return "json"; }
+
     private static void objectToJson(StringBuilder json, Student s, int indentation) {
         json.append("{\n"); indentation++;
 
@@ -44,6 +45,7 @@ public class JsonStudentExportImpl implements StudentExportService {
         appendField(json, "isActive", s.isActive(), indentation, false);
 
         indentation--;
+        json.append("\n");
         indent(json, indentation);
         json.append("}");
     }

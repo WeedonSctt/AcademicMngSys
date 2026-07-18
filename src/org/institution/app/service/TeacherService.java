@@ -1,10 +1,12 @@
 package org.institution.app.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import org.institution.app.model.Teacher;
 import org.institution.app.repository.TeacherRepository;
 import org.institution.app.util.Enum;
 import org.institution.app.util.*;
+import org.institution.app.serializer.teacher.TeacherSerializer;
 
 public class TeacherService {
     private final TeacherRepository repository;
@@ -110,12 +112,25 @@ public class TeacherService {
         return null;
     }
 
-    public boolean save() {
-        return repository.save();
+    public boolean save(TeacherSerializer serializer) {
+        return repository.save(serializer);
     }
 
     public boolean loadRepo() {
         return repository.load();
+    }
+
+    public boolean exportData(TeacherSerializer serializer) {
+        String data = serializer.export(repository.getTeachers());
+        String extension = serializer.getExtension();
+
+        try {
+            new FileManager().writeToFile("exported/" + extension + "/teachers." + extension, data);
+        } catch (IOException e) {
+            return false;
+        }
+
+        return true;
     }
 
     public boolean existTeacher(int id) {

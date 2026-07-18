@@ -1,10 +1,10 @@
-package org.institution.app.service.export.registration.impl;
+package org.institution.app.serializer.registration.impl;
 
-import org.institution.app.service.export.registration.RegistrationExportService;
+import org.institution.app.serializer.registration.RegistrationSerializer;
 import org.institution.app.model.Registration;
 import java.util.List;
 
-public class RegistrationXmlExporterImpl implements RegistrationExportService {
+public class XmlRegistrationSerializer implements RegistrationSerializer {
     @Override
     public String export(List<Registration> registrations) {
         int indentation = 0;
@@ -24,6 +24,9 @@ public class RegistrationXmlExporterImpl implements RegistrationExportService {
         
         return xml.toString();
     }
+
+    @Override
+    public String getExtension() { return "xml"; }
     
     private static void indent(StringBuilder xml, int times) {        
         for (int i = 0; i < times; i++) {

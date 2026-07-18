@@ -1,10 +1,12 @@
 package org.institution.app.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import org.institution.app.repository.CourseRepository;
 import org.institution.app.model.Course;
 import org.institution.app.util.Enum;
 import org.institution.app.util.*;
+import org.institution.app.serializer.course.CourseSerializer;
 
 public class CourseService {
     private final CourseRepository repository;
@@ -134,8 +136,8 @@ public class CourseService {
         return null;
     }
 
-    public boolean save() {
-        return repository.save();
+    public boolean save(CourseSerializer serializer) {
+        return repository.save(serializer);
     }
 
     public boolean loadRepo() {
@@ -150,6 +152,19 @@ public class CourseService {
         }
 
         return false;
+    }
+
+    public boolean exportData(CourseSerializer serializer) {
+        String data = serializer.export(repository.getCourses());
+        String extension = serializer.getExtension();
+
+        try {
+            new FileManager().writeToFile("exported/" + extension + "/courses." + extension, data);
+        } catch (IOException e) {
+            return false;
+        }
+
+        return true;
     }
 
     public ArrayList<String> searchCourseByName(String name) {

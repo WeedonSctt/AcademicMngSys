@@ -1,10 +1,12 @@
 package org.institution.app.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import org.institution.app.model.*;
 import org.institution.app.repository.RegistrationRepository;
 import org.institution.app.util.Enum;
 import org.institution.app.util.*;
+import org.institution.app.serializer.registration.RegistrationSerializer;
 
 public class RegistrationService {
     private final RegistrationRepository repository;
@@ -214,12 +216,25 @@ public class RegistrationService {
         return academicHistory;
     }
 
-    public boolean save() {
-        return repository.save();
+    public boolean save(RegistrationSerializer serializer) {
+        return repository.save(serializer);
     }
 
     public boolean loadRepo() {
         return repository.load();
+    }
+
+    public boolean exportData(RegistrationSerializer serializer) {
+        String data = serializer.export(repository.getRegistrations());
+        String extension = serializer.getExtension();
+
+        try {
+            new FileManager().writeToFile("exported/" + extension + "/registrations." + extension, data);
+        } catch (IOException e) {
+            return false;
+        }
+
+        return true;
     }
 
     public ArrayList<ArrayList<String>> getCoursesEnrolledByStudent(int studentID) {

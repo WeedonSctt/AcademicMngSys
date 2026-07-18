@@ -1,10 +1,10 @@
-package org.institution.app.service.export.teacher.impl;
+package org.institution.app.serializer.teacher.impl;
 
-import org.institution.app.service.export.teacher.TeacherExportService;
+import org.institution.app.serializer.teacher.TeacherSerializer;
 import org.institution.app.model.Teacher;
 import java.util.List;
 
-public class TeacherXmlExporterImpl implements TeacherExportService {
+public class XmlTeacherSerializer implements TeacherSerializer {
     @Override
     public String export(List<Teacher> teachers) {
         int indentation = 0;
@@ -24,6 +24,9 @@ public class TeacherXmlExporterImpl implements TeacherExportService {
         
         return xml.toString();
     }
+
+    @Override
+    public String getExtension() { return "xml"; }
     
     private static void indent(StringBuilder xml, int times) {        
         for (int i = 0; i < times; i++) {

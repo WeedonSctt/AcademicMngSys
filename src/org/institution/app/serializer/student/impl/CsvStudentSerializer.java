@@ -1,10 +1,10 @@
-package org.institution.app.service.export.student.impl;
+package org.institution.app.serializer.student.impl;
 
-import org.institution.app.service.export.student.StudentExportService;
+import org.institution.app.serializer.student.StudentSerializer;
 import org.institution.app.model.Student;
 import java.util.List;
 
-public class CsvStudentExporterImpl implements StudentExportService {
+public class CsvStudentSerializer implements StudentSerializer {
     @Override
     public String export(List<Student> students) {
         StringBuilder csv = new StringBuilder();
@@ -30,4 +30,8 @@ public class CsvStudentExporterImpl implements StudentExportService {
         csv.append(",");
         csv.append(s.isActive());
     }
+
+    @Override
+    public String getExtension() { return "csv"; }
+
 }

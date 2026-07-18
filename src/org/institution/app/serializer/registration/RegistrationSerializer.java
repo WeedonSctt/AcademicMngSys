@@ -1,8 +1,10 @@
-package org.institution.app.service.export.registration;
+package org.institution.app.serializer.registration;
 
 import org.institution.app.model.Registration;
 import java.util.List;
 
-public interface RegistrationExportService {
+public interface RegistrationSerializer {
     String export(List<Registration> registrations);
+
+    String getExtension();
 }

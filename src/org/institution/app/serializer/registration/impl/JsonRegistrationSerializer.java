@@ -1,10 +1,10 @@
-package org.institution.app.service.export.registration.impl;
+package org.institution.app.serializer.registration.impl;
 
-import org.institution.app.service.export.registration.RegistrationExportService;
+import org.institution.app.serializer.registration.RegistrationSerializer;
 import org.institution.app.model.Registration;
 import java.util.List;
 
-public class RegistrationJsonExporterImpl implements RegistrationExportService {
+public class JsonRegistrationSerializer implements RegistrationSerializer {
     
     @Override
     public String export(List<Registration> registrations) {
@@ -31,6 +31,9 @@ public class RegistrationJsonExporterImpl implements RegistrationExportService {
 
         return json.toString();
     }
+
+    @Override
+    public String getExtension() { return "json"; }
 
     private static void objectToJson(StringBuilder json, Registration r, int indentation) {
         json.append("{\n"); indentation++;

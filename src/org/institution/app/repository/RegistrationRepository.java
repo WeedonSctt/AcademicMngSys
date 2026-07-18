@@ -2,6 +2,7 @@ package org.institution.app.repository;
 
 import java.util.ArrayList;
 import org.institution.app.model.Registration;
+import org.institution.app.serializer.registration.RegistrationSerializer;
 
 public interface RegistrationRepository {
 
@@ -13,7 +14,7 @@ public interface RegistrationRepository {
 
     ArrayList<Registration> getRegistrations();
 
-    boolean save();
+    boolean save(RegistrationSerializer serializer);
 
     boolean load();
 

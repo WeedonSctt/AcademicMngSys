@@ -1,11 +1,12 @@
 package org.institution.app.repository.csv;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.institution.app.model.Course;
 import org.institution.app.repository.CourseRepository;
 import org.institution.app.util.FileManager;
-import org.institution.app.util.Helper;
+import org.institution.app.serializer.course.CourseSerializer;
 
 public class CsvCourseRepository implements CourseRepository {
     private ArrayList<Course> courses = new ArrayList<>();
@@ -60,19 +61,15 @@ public class CsvCourseRepository implements CourseRepository {
     }
 
     @Override
-    public boolean save() {
-        ArrayList<ArrayList<String>> coursesData = new ArrayList<>();
-        
-        for (Course c : courses) {
-            coursesData.add(Helper.courseToStringArray(c));
-        }
+    public boolean save(CourseSerializer serializer) {
+        String data = serializer.export(courses);
 
         try {
-            writer.writeToFile("courses.txt", coursesData);
+            writer.writeToFile("csv/courses.csv", data);
         } catch (IOException e) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -81,8 +78,8 @@ public class CsvCourseRepository implements CourseRepository {
         ArrayList<ArrayList<String>> coursesData; 
         
         try {
-            coursesData = reader.readFromFile("courses.txt");
-        } catch (IOException e) {
+            coursesData = reader.readFromFile("csv/courses.csv");
+        } catch (FileNotFoundException e) {
             return false;
         }
 

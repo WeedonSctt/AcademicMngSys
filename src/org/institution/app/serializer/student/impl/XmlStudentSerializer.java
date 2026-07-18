@@ -1,29 +1,32 @@
-package org.institution.app.service.export.course.impl;
+package org.institution.app.serializer.student.impl;
 
-import org.institution.app.service.export.course.CourseExportService;
-import org.institution.app.model.Course;
+import org.institution.app.serializer.student.StudentSerializer;
+import org.institution.app.model.Student;
 import java.util.List;
 
-public class XmlCourseExporterImpl implements CourseExportService {
+public class XmlStudentSerializer implements StudentSerializer {
     @Override
-    public String export(List<Course> courses) {
+    public String export(List<Student> students) {
         int indentation = 0;
         StringBuilder xml = new StringBuilder();
 
-        xml.append("<courses>");
+        xml.append("<students>");
         indentation++;
 
-        for (int i = 0; i < courses.size(); i++) {
-            objectToXml(xml, courses.get(i), indentation);
+        for (int i = 0; i < students.size(); i++) {
+            objectToXml(xml, students.get(i), indentation);
         }
 
         indentation--;
         xml.append("\n");
         indent(xml, indentation);
-        xml.append("</courses>");
+        xml.append("</students>");
         
         return xml.toString();
     }
+
+    @Override
+    public String getExtension() { return "xml"; }
     
     private static void indent(StringBuilder xml, int times) {        
         for (int i = 0; i < times; i++) {
@@ -31,22 +34,23 @@ public class XmlCourseExporterImpl implements CourseExportService {
         }
     }
     
-    private static void objectToXml(StringBuilder xml, Course c, int indentation) {
+    private static void objectToXml(StringBuilder xml, Student s, int indentation) {
         xml.append("\n");
         indent(xml, indentation);
-        xml.append("<course>");
+        xml.append("<student>");
         indentation++;
         
-        appendTag(xml, "id", c.getId(), indentation);
-        appendTag(xml, "name", c.getName(), indentation);
-        appendTag(xml, "description", c.getDescription(), indentation);
-        appendTag(xml, "maximumStudents", c.getMaximumStudents(), indentation);
-        appendTag(xml, "teacherId", c.getTeacherId(), indentation);
+        appendTag(xml, "id", s.getId(), indentation);
+        appendTag(xml, "name", s.getName(), indentation);
+        appendTag(xml, "age", s.getAge(), indentation);
+        appendTag(xml, "email", s.getEmail(), indentation);
+        appendTag(xml, "averageGrade", s.getAverageGrade(), indentation);
+        appendTag(xml, "isActive", s.isActive(), indentation);
 
         indentation--;
         xml.append("\n");
         indent(xml, indentation);
-        xml.append("</course>");
+        xml.append("</student>");
     }
 
     private static void appendTag(StringBuilder xml, String key, String value, int indentation){
@@ -57,6 +61,20 @@ public class XmlCourseExporterImpl implements CourseExportService {
     }
 
     private static void appendTag(StringBuilder xml, String key, int value, int indentation) {
+        beginTag(xml, indentation);
+        openTag(xml, key);
+        xml.append(value);
+        closeTag(xml, key);
+    }
+
+    private static void appendTag(StringBuilder xml, String key, double value, int indentation) {
+        beginTag(xml, indentation);
+        openTag(xml, key);
+        xml.append(value);
+        closeTag(xml, key);
+    }
+
+    private static void appendTag(StringBuilder xml, String key, boolean value, int indentation) {
         beginTag(xml, indentation);
         openTag(xml, key);
         xml.append(value);
@@ -113,5 +131,4 @@ public class XmlCourseExporterImpl implements CourseExportService {
         return string.toString();
     }
     
-
 }

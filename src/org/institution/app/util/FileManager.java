@@ -12,20 +12,15 @@ public class FileManager {
 
     public FileManager() {}
 
-    public Enum.Error writeToFile(String path, ArrayList<ArrayList<String>> array) throws IOException {
-        File f = new File("data/csv/" + path);
+    public Enum.Error writeToFile(String path, String data) throws IOException {
+        File f = new File("data/" + path);
 
         if (!f.exists()) {
             f.createNewFile();
         }
 
         try (FileWriter writer = new FileWriter(f)) {
-            for (int i = 0; i < array.size(); i++) {
-                String s = Helper.stringArrayToCSV(array.get(i));
-
-                writer.write(s + "\n");
-            }
-
+            writer.write(data);
             writer.close();
         } catch (IOException e) {
             return Enum.Error.COULD_NOT_WRITE_TO_FILE;
@@ -36,7 +31,7 @@ public class FileManager {
 
 
     public ArrayList<ArrayList<String>> readFromFile(String path) throws FileNotFoundException {
-        File f = new File("data/csv/" + path);
+        File f = new File("data/" + path);
         Scanner reader = new Scanner(f);
         ArrayList<ArrayList<String>> array = new ArrayList<>();
 

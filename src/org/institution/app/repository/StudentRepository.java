@@ -2,6 +2,7 @@ package org.institution.app.repository;
 
 import java.util.ArrayList;
 import org.institution.app.model.Student;
+import org.institution.app.serializer.student.StudentSerializer;
 
 public interface StudentRepository {
 
@@ -15,7 +16,7 @@ public interface StudentRepository {
 
     ArrayList<Student> getStudents();
 
-    boolean save();
+    boolean save(StudentSerializer serializer);
 
     boolean load();
 

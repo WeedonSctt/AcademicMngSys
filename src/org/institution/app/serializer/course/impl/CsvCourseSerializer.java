@@ -1,10 +1,10 @@
-package org.institution.app.service.export.course.impl;
+package org.institution.app.serializer.course.impl;
 
-import org.institution.app.service.export.course.CourseExportService;
+import org.institution.app.serializer.course.CourseSerializer;
 import org.institution.app.model.Course;
 import java.util.List;
 
-public class CsvCourseExporterImpl implements CourseExportService {
+public class CsvCourseSerializer implements CourseSerializer {
     @Override
     public String export(List<Course> courses) {
         StringBuilder csv = new StringBuilder();
@@ -16,6 +16,9 @@ public class CsvCourseExporterImpl implements CourseExportService {
 
         return csv.toString();
     }
+
+    @Override
+    public String getExtension() { return "csv"; }
 
     private static void objectToCsv(StringBuilder csv, Course c) {
         csv.append(c.getId());
